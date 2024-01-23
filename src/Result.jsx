@@ -1,4 +1,4 @@
-function Result({ correctAnswers, reset, setReset, onReset }) {
+function Result({ correctAnswers, onReset }) {
   return (
     <div className="result">
       <img src="https://cdn-icons-png.flaticon.com/512/2278/2278992.png" />

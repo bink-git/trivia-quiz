@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 
 function Game({ quest, onClickAnswer }) {
   const { incorrect_answers, correct_answer, question } = quest;

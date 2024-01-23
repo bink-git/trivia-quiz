@@ -1,9 +1,12 @@
 import { useState, useEffect } from 'react';
 import axios from 'axios';
+import toast, { Toaster } from 'react-hot-toast';
 
 import Result from './Result';
 import Game from './Game';
 import Welcome from './Welcome';
+
+import { API_URL } from './constants';
 
 import logo from './assets/logo.png';
 
@@ -13,6 +16,8 @@ function App() {
   const [correctAnswers, setCorrectAnswers] = useState(0);
   const [start, setStart] = useState(true);
   const [reset, setReset] = useState(true);
+
+  const notify = () => toast('Error fetching data');
 
   const onClickNext = () => {
     setStep(step + 1);
@@ -39,12 +44,10 @@ function App() {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const res = await axios.get(
-          'https://opentdb.com/api.php?amount=10&category=9&difficulty=easy&type=multiple'
-        );
+        const res = await axios.get(API_URL);
         setData(res.data.results);
       } catch (error) {
-        console.error('Error fetching data:', error);
+        notify();
       }
     };
 
@@ -59,6 +62,17 @@ function App() {
         <img src={logo} alt="logo" className="logo" />
       </header>
       <div className="App">
+        <Toaster
+          toastOptions={{
+            style: {
+              padding: '18px',
+              color: '#fff',
+              fontWeight: 'bold',
+              backgroundColor: '#d8372b',
+            },
+          }}
+        />
+
         {start && reset && <Welcome onStart={onStart} />}
         {!start && quest && (
           <>
