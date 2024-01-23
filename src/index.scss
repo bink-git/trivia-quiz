@@ -5,15 +5,16 @@ body {
   display: flex;
   align-items: center;
   justify-content: center;
-  // height: 100vh;
 }
 
 .App {
-  width: 500px;
+  max-width: 500px;
   border-radius: 30px;
-  padding: 40px;
+  padding: 20px;
   background-color: #fff;
   position: relative;
+  margin-inline: 20px;
+  margin-bottom: 40px;
 
   .result {
     text-align: center;
@@ -103,7 +104,7 @@ header {
 
 .logo {
   width: 150px;
-  padding: 100px;
+  margin-block: 80px;
 }
 
 .next {
