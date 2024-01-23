@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import axios from 'axios';
-import toast, { Toaster } from 'react-hot-toast';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 import Result from './Result';
 import Game from './Game';
@@ -17,7 +18,7 @@ function App() {
   const [start, setStart] = useState(true);
   const [reset, setReset] = useState(true);
 
-  const notify = () => toast('Error fetching data');
+  const notify = () => toast.error('Error fetching data');
 
   const onClickNext = () => {
     setStep(step + 1);
@@ -62,21 +63,24 @@ function App() {
         <img src={logo} alt="logo" className="logo" />
       </header>
       <div className="App">
-        <Toaster
-          toastOptions={{
-            style: {
-              padding: '18px',
-              color: '#fff',
-              fontWeight: 'bold',
-              backgroundColor: '#d8372b',
-            },
-          }}
+        <ToastContainer
+          position="top-center"
+          autoClose={3000}
+          hideProgressBar={false}
+          newestOnTop={false}
+          closeOnClick
+          rtl={false}
+          pauseOnFocusLoss
+          draggable
+          pauseOnHover
+          theme="colored"
+          transition:Bounce
         />
 
         {start && reset && <Welcome onStart={onStart} />}
         {!start && quest && (
           <>
-            <p style={{ marginBottom: '30px' }}>
+            <p className="quest-step">
               Question: {step + 1} / {data.length}
             </p>
 
