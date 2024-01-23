@@ -1,9 +1,12 @@
 import { useEffect, useState } from 'react';
+import he from 'he';
 
 function Game({ quest, onClickAnswer }) {
   const { incorrect_answers, correct_answer, question } = quest;
 
   const [selectedAnswer, setSelectedAnswer] = useState(null);
+
+  const decodeTitle = he.decode(question);
 
   useEffect(() => {
     setSelectedAnswer(null);
@@ -20,7 +23,7 @@ function Game({ quest, onClickAnswer }) {
 
   return (
     <>
-      <h2>{quest.question}</h2>
+      <h2>{decodeTitle}</h2>
       <ul>
         {answers.map((answer) => (
           <li
@@ -38,7 +41,7 @@ function Game({ quest, onClickAnswer }) {
             }`}
             key={answer}
           >
-            {answer}
+            {he.decode(answer)}
           </li>
         ))}
       </ul>
