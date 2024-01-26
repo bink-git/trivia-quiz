@@ -56,6 +56,7 @@ function App() {
   }, []);
 
   const quest = data && data[step];
+  const totalQuestions = data.length;
 
   return (
     <>
@@ -89,6 +90,7 @@ function App() {
               onClickAnswer={onClickAnswer}
               correctAnswers={correctAnswers}
               onClickNext={onClickNext}
+              totalQuestions={totalQuestions}
             />
             <button className="next" onClick={onClickNext}>
               {step === data.length - 1 ? 'Finish Quiz' : 'Next'}

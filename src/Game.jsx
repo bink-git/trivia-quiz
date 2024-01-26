@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import he from 'he';
 
-function Game({ quest, onClickAnswer }) {
+function Game({ quest, onClickAnswer, correctAnswers, totalQuestions }) {
   const { incorrect_answers, correct_answer, question } = quest;
 
   const [selectedAnswer, setSelectedAnswer] = useState(null);
@@ -27,6 +27,9 @@ function Game({ quest, onClickAnswer }) {
 
   return (
     <>
+      <p>
+        Correct Answers: {correctAnswers} / {totalQuestions}{' '}
+      </p>
       <h2>{decodeTitle}</h2>
       <ul>
         {answers.map((answer) => (
