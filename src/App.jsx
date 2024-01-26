@@ -7,7 +7,7 @@ import Result from './Result';
 import Game from './Game';
 import Welcome from './Welcome';
 
-import { API_URL, REQUEST_TOKEN } from './constants';
+import { API_URL, REQUEST_TOKEN, RESPONSE_CODES } from './constants';
 
 import logo from './assets/logo.png';
 
@@ -19,10 +19,19 @@ function App() {
   const [reset, setReset] = useState(true);
   const [showResult, setShowResult] = useState(false);
   const [token, setToken] = useState('');
-  const [resCode, setResCode] = useState('');
+  // const [resCode, setResCode] = useState('');
+
+  const { code, message } = RESPONSE_CODES;
+
+  let resCode;
+  let resMessage;
+
+  // const { code, message } = RESPONSE_CODES.find(
+  //   (item) => item.code === resCode
+  // );
 
   const notifyFetch = () => toast.error('Error fetching data');
-  const notifyToken = () => toast.error('Token Not Found');
+  const notifyToken = (message) => toast.error(message);
 
   const onClickNext = () => {
     setStep(step + 1);
@@ -52,14 +61,18 @@ function App() {
     const fetchData = async () => {
       try {
         const userToken = await axios.get(REQUEST_TOKEN);
-        const { token, response_code } = userToken.data;
+        const { token, response_code, response_message } = userToken.data;
+
+        resCode = response_code;
+        resMessage = response_message;
+
         setToken(token);
-        setResCode(response_code);
+
         const res = await axios.get(`${API_URL}&token=${token}`);
         setData(res.data.results);
       } catch (error) {
-        if (resCode === 3) {
-          notifyToken();
+        if (resCode === code) {
+          notifyToken(resMessage);
           setToken('');
         } else {
           notifyFetch();
@@ -67,7 +80,9 @@ function App() {
       }
     };
 
-    fetchData();
+    if (!token) {
+      fetchData();
+    }
   }, []);
 
   const quest = data && data[step];
