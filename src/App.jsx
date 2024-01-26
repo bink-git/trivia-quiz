@@ -7,7 +7,7 @@ import Result from './Result';
 import Game from './Game';
 import Welcome from './Welcome';
 
-import { API_URL } from './constants';
+import { API_URL, TOKEN } from './constants';
 
 import logo from './assets/logo.png';
 
@@ -18,6 +18,7 @@ function App() {
   const [start, setStart] = useState(true);
   const [reset, setReset] = useState(true);
   const [showResult, setShowResult] = useState(false);
+  const [token, setToken] = useState('');
 
   const notify = () => toast.error('Error fetching data');
 
@@ -45,14 +46,12 @@ function App() {
     setShowResult(false);
   };
 
-  const onShowResult = () => {
-    setShowResult(true);
-  };
-
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const res = await axios.get(API_URL);
+        const userToken = await axios.get(TOKEN);
+        setToken(userToken.data.token);
+        const res = await axios.get(`${API_URL}&token=${token}`);
         setData(res.data.results);
       } catch (error) {
         notify();
@@ -104,7 +103,7 @@ function App() {
                 {step === data.length - 1 ? 'Finish Quiz' : 'Next'}
               </button>
               <button className="btn" onClick={() => setShowResult(true)}>
-                Finish Game
+                Finish
               </button>
             </div>
           </>
