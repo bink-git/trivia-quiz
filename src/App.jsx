@@ -7,7 +7,7 @@ import Result from './Result';
 import Game from './Game';
 import Welcome from './Welcome';
 
-import { API_URL, TOKEN } from './constants';
+import { API_URL, REQUEST_TOKEN } from './constants';
 
 import logo from './assets/logo.png';
 
@@ -51,7 +51,7 @@ function App() {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const userToken = await axios.get(TOKEN);
+        const userToken = await axios.get(REQUEST_TOKEN);
         const { token, response_code } = userToken.data;
         setToken(token);
         setResCode(response_code);
