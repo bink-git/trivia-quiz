@@ -17,6 +17,7 @@ function App() {
   const [correctAnswers, setCorrectAnswers] = useState(0);
   const [start, setStart] = useState(true);
   const [reset, setReset] = useState(true);
+  const [showResult, setShowResult] = useState(false);
 
   const notify = () => toast.error('Error fetching data');
 
@@ -33,6 +34,7 @@ function App() {
   const onStart = () => {
     setStart(false);
     setReset(false);
+    setShowResult(false);
   };
 
   const onReset = () => {
@@ -40,6 +42,11 @@ function App() {
     setStep(0);
     setCorrectAnswers(0);
     setStart(true);
+    setShowResult(false);
+  };
+
+  const onShowResult = () => {
+    setShowResult(true);
   };
 
   useEffect(() => {
@@ -79,7 +86,7 @@ function App() {
         />
 
         {start && reset && <Welcome onStart={onStart} />}
-        {!start && quest && (
+        {!start && quest && !showResult && (
           <>
             <p className="quest-step">
               Question: {step + 1} / {data.length}
@@ -92,19 +99,25 @@ function App() {
               onClickNext={onClickNext}
               totalQuestions={totalQuestions}
             />
-            <button className="next" onClick={onClickNext}>
-              {step === data.length - 1 ? 'Finish Quiz' : 'Next'}
-            </button>
+            <div className="buttons">
+              <button className="next" onClick={onClickNext}>
+                {step === data.length - 1 ? 'Finish Quiz' : 'Next'}
+              </button>
+              <button className="btn" onClick={() => setShowResult(true)}>
+                Finish Game
+              </button>
+            </div>
           </>
         )}
 
-        {step === data.length && (
-          <Result
-            correctAnswers={correctAnswers}
-            reset={reset}
-            onReset={onReset}
-          />
-        )}
+        {step === data.length ||
+          (showResult && (
+            <Result
+              correctAnswers={correctAnswers}
+              reset={reset}
+              onReset={onReset}
+            />
+          ))}
       </div>
     </>
   );

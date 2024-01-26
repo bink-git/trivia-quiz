@@ -27,7 +27,7 @@ function Game({ quest, onClickAnswer, correctAnswers, totalQuestions }) {
 
   return (
     <>
-      <p>
+      <p className="correct">
         Correct Answers: {correctAnswers} / {totalQuestions}{' '}
       </p>
       <h2>{decodeTitle}</h2>
