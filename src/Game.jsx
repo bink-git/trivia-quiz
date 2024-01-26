@@ -18,6 +18,10 @@ function Game({ quest, onClickAnswer }) {
       setSelectedAnswer(answer);
     }
   };
+  // const handleAnswerClick = (answer) => {
+  //   onClickAnswer(answer);
+  //   setSelectedAnswer(answer);
+  // };
 
   const answers = [correct_answer, ...incorrect_answers].sort();
 
@@ -39,6 +43,7 @@ function Game({ quest, onClickAnswer }) {
                 ? 'incorrect'
                 : '')
             }`}
+            // className={selectedAnswer === answer ? 'correct' : ''}
             key={answer}
           >
             {he.decode(answer)}

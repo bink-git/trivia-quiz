@@ -84,7 +84,12 @@ function App() {
               Question: {step + 1} / {data.length}
             </p>
 
-            <Game quest={quest} onClickAnswer={onClickAnswer} />
+            <Game
+              quest={quest}
+              onClickAnswer={onClickAnswer}
+              correctAnswers={correctAnswers}
+              onClickNext={onClickNext}
+            />
             <button className="next" onClick={onClickNext}>
               {step === data.length - 1 ? 'Finish Quiz' : 'Next'}
             </button>
