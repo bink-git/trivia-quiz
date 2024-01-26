@@ -19,8 +19,10 @@ function App() {
   const [reset, setReset] = useState(true);
   const [showResult, setShowResult] = useState(false);
   const [token, setToken] = useState('');
+  const [resCode, setResCode] = useState('');
 
-  const notify = () => toast.error('Error fetching data');
+  const notifyFetch = () => toast.error('Error fetching data');
+  const notifyToken = () => toast.error('Token Not Found');
 
   const onClickNext = () => {
     setStep(step + 1);
@@ -50,11 +52,18 @@ function App() {
     const fetchData = async () => {
       try {
         const userToken = await axios.get(TOKEN);
-        setToken(userToken.data.token);
+        const { token, response_code } = userToken.data;
+        setToken(token);
+        setResCode(response_code);
         const res = await axios.get(`${API_URL}&token=${token}`);
         setData(res.data.results);
       } catch (error) {
-        notify();
+        if (resCode === 3) {
+          notifyToken();
+          setToken('');
+        } else {
+          notifyFetch();
+        }
       }
     };
 
@@ -115,6 +124,7 @@ function App() {
               correctAnswers={correctAnswers}
               reset={reset}
               onReset={onReset}
+              totalQuestions={totalQuestions}
             />
           ))}
       </div>
