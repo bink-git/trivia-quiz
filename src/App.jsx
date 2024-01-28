@@ -78,7 +78,10 @@ function App() {
       correctAnswers,
     };
     setStatistic([...statistic, newData]);
-    localStorage.setItem('quizData', JSON.stringify([...statistic, newData]));
+    localStorage.setItem(
+      'quizStatistic',
+      JSON.stringify([...statistic, newData])
+    );
     setShowResult(true);
   };
 
