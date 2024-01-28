@@ -180,7 +180,7 @@ function App() {
         </button>
       )}
 
-      {isStatisic && (
+      {isStatisic && !showResult && !start && (
         <Statistic
           correctAnswers={correctAnswers}
           totalQuestions={totalQuestions}
