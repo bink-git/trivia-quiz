@@ -3,7 +3,9 @@ const Welcome = ({ onStart }) => {
     <>
       <div className="welcome">
         <p>Welcome to the Trivia Challenge</p>
-        <button onClick={() => onStart()}>Start Quiz</button>
+        <button className="btn" onClick={() => onStart()}>
+          Start Quiz
+        </button>
       </div>
     </>
   );

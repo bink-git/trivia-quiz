@@ -21,7 +21,7 @@ body {
   padding-inline: 20px;
 }
 
-button {
+.btn {
   font-weight: bold;
   border-radius: 30px;
   border: 0;
@@ -130,4 +130,33 @@ header {
 
 .correct {
   margin-bottom: 20px;
+}
+
+.statistic-btn {
+  display: block;
+  margin: 0 auto;
+  margin-top: 20px;
+  border-radius: 20px;
+  border: 0;
+  padding: 10px;
+  font-size: 16px;
+  background-color: #fff;
+  color: #ff006e;
+  cursor: pointer;
+  &:hover {
+    text-decoration: underline;
+  }
+}
+
+.statistic {
+  margin-top: 40px;
+  padding: 20px;
+  border-radius: 20px;
+  background-color: #fff;
+  max-width: 500px;
+  ul {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
 }
