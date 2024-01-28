@@ -50,6 +50,7 @@ function App() {
     setStart(false);
     setReset(false);
     setShowResult(false);
+    setIsStatisic(false);
   };
 
   const onReset = () => {
@@ -58,6 +59,7 @@ function App() {
     setCorrectAnswers(0);
     setStart(true);
     setShowResult(false);
+    setIsStatisic(false);
   };
 
   const onStatistic = () => {
@@ -83,6 +85,7 @@ function App() {
       JSON.stringify([...statistic, newData])
     );
     setShowResult(true);
+    setIsStatisic(false);
   };
 
   useEffect(() => {
@@ -180,7 +183,7 @@ function App() {
         </button>
       )}
 
-      {isStatisic && !showResult && !start && (
+      {isStatisic && (
         <Statistic
           correctAnswers={correctAnswers}
           totalQuestions={totalQuestions}
