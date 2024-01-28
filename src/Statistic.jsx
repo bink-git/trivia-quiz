@@ -6,8 +6,10 @@ const Statistic = ({ correctAnswers, totalQuestions, statistic }) => {
       <ul>
         {statistic.map((entry, index) => (
           <li key={index}>
-            Date: {entry.date}, Correct Answers: {entry.correctAnswers} /
-            {totalQuestions}
+            <p>Date: {entry.date},</p>
+            <p>
+              Correct Answers: {entry.correctAnswers} / {totalQuestions}
+            </p>
           </li>
         ))}
       </ul>
