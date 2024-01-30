@@ -8,9 +8,13 @@ import Game from './Game';
 import Welcome from './Welcome';
 import Statistic from './Statistic';
 
+import Skeleton from 'react-loading-skeleton';
+import 'react-loading-skeleton/dist/skeleton.css';
+
 import { API_URL, REQUEST_TOKEN, RESPONSE_CODES } from './constants';
 
 import logo from './assets/logo.png';
+import GameSkeleton from './GameSkeleton';
 
 function App() {
   const [data, setData] = useState([]);
@@ -165,8 +169,8 @@ function App() {
             <p className="correct">
               Correct Answers: {correctAnswers} / {totalQuestions}
             </p>
-            {loading && !start ? (
-              <p>Loading...</p>
+            {!loading && !start ? (
+              <GameSkeleton />
             ) : (
               <Game
                 quest={quest}

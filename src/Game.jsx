@@ -1,5 +1,7 @@
 import { useEffect, useState } from 'react';
 import he from 'he';
+import Skeleton from 'react-loading-skeleton';
+import 'react-loading-skeleton/dist/skeleton.css';
 
 function Game({ quest, onClickAnswer, correctAnswers, totalQuestions }) {
   const { incorrect_answers, correct_answer, question } = quest;
@@ -26,8 +28,8 @@ function Game({ quest, onClickAnswer, correctAnswers, totalQuestions }) {
   const answers = [correct_answer, ...incorrect_answers].sort();
 
   return (
-    <>
-      <h2>{decodeTitle}</h2>
+    <div className="game">
+      <h2>{decodeTitle || <Skeleton />}</h2>
       <ul>
         {answers.map((answer) => (
           <li
@@ -50,7 +52,7 @@ function Game({ quest, onClickAnswer, correctAnswers, totalQuestions }) {
           </li>
         ))}
       </ul>
-    </>
+    </div>
   );
 }
 
