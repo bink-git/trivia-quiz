@@ -4,7 +4,7 @@ const Statistic = ({ correctAnswers, totalQuestions, statistic }) => {
   return (
     <div className="statistic">
       <ul>
-        {statistic.map((entry, index) => (
+        {statistic.reverse().map((entry, index) => (
           <li key={index}>
             <p>Date: {entry.date},</p>
             <p>

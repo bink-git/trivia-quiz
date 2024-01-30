@@ -22,7 +22,8 @@ function App() {
   const [token, setToken] = useState('');
   const [isStatisic, setIsStatisic] = useState(false);
   const [statistic, setStatistic] = useState([]);
-  // const [resCode, setResCode] = useState('');
+  const [loading, setLoading] = useState(true);
+  const [totalQuestions, setTotalQuestions] = useState(1);
 
   const { code, message } = RESPONSE_CODES;
 
@@ -36,8 +37,10 @@ function App() {
   const notifyFetch = () => toast.error('Error fetching data');
   const notifyToken = (message) => toast.error(message);
 
-  const onClickNext = () => {
-    setStep(step + 1);
+  const onClickNext = async () => {
+    setLoading(true); // Show loading when Next button is clicked
+    await handleFetch();
+    setLoading(false); // Hide loading after next question is loaded
   };
 
   const onClickAnswer = (answer) => {
@@ -60,6 +63,7 @@ function App() {
     setStart(true);
     setShowResult(false);
     setIsStatisic(false);
+    setTotalQuestions(1);
   };
 
   const onStatistic = () => {
@@ -88,6 +92,20 @@ function App() {
     setIsStatisic(false);
   };
 
+  const handleFetch = async () => {
+    try {
+      setLoading(true);
+      const res = await axios.get(`${API_URL}&token=${token}`);
+      setData(res.data.results);
+      setTotalQuestions((total) => total + 1);
+    } catch (error) {
+      if (resCode === code) {
+        notifyToken(resMessage);
+        setLoading(false);
+      }
+    }
+  };
+
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -108,6 +126,8 @@ function App() {
         } else {
           notifyFetch();
         }
+      } finally {
+        setLoading(false);
       }
     };
 
@@ -117,7 +137,6 @@ function App() {
   }, []);
 
   const quest = data && data[step];
-  const totalQuestions = data.length;
 
   return (
     <>
@@ -140,22 +159,26 @@ function App() {
         />
 
         {start && reset && <Welcome onStart={onStart} />}
+
         {!start && quest && !showResult && (
           <>
-            <p className="quest-step">
-              Question: {step + 1} / {data.length}
+            <p className="correct">
+              Correct Answers: {correctAnswers} / {totalQuestions}
             </p>
+            {loading && !start ? (
+              <p>Loading...</p>
+            ) : (
+              <Game
+                quest={quest}
+                onClickAnswer={onClickAnswer}
+                correctAnswers={correctAnswers}
+                onClickNext={onClickNext}
+              />
+            )}
 
-            <Game
-              quest={quest}
-              onClickAnswer={onClickAnswer}
-              correctAnswers={correctAnswers}
-              onClickNext={onClickNext}
-              totalQuestions={totalQuestions}
-            />
             <div className="buttons">
               <button className="next btn" onClick={onClickNext}>
-                {step === data.length - 1 ? 'Finish Quiz' : 'Next'}
+                Next
               </button>
               {/* <button className="btn" onClick={() => setShowResult(true)}>
                 Finish
