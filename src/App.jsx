@@ -42,9 +42,9 @@ function App() {
   const notifyToken = (message) => toast.error(message);
 
   const onClickNext = async () => {
-    setLoading(true); // Show loading when Next button is clicked
+    setLoading(true);
     await handleFetch();
-    setLoading(false); // Hide loading after next question is loaded
+    setLoading(false);
   };
 
   const onClickAnswer = (answer) => {
@@ -86,6 +86,7 @@ function App() {
     const newData = {
       date: date.toLocaleString(),
       correctAnswers,
+      totalQuestions,
     };
     setStatistic([...statistic, newData]);
     localStorage.setItem(
@@ -169,7 +170,7 @@ function App() {
             <p className="correct">
               Correct Answers: {correctAnswers} / {totalQuestions}
             </p>
-            {!loading && !start ? (
+            {loading && !start ? (
               <GameSkeleton />
             ) : (
               <Game
@@ -184,9 +185,6 @@ function App() {
               <button className="next btn" onClick={onClickNext}>
                 Next
               </button>
-              {/* <button className="btn" onClick={() => setShowResult(true)}>
-                Finish
-              </button> */}
               <button className="btn" onClick={() => handleStatistic()}>
                 Finish
               </button>

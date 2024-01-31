@@ -8,7 +8,7 @@ const Statistic = ({ correctAnswers, totalQuestions, statistic }) => {
           <li key={index}>
             <p>Date: {entry.date},</p>
             <p>
-              Correct Answers: {entry.correctAnswers} / {totalQuestions}
+              Correct Answers: {entry.correctAnswers} / {entry.totalQuestions}
             </p>
           </li>
         ))}

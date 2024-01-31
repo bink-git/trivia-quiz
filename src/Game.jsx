@@ -29,7 +29,11 @@ function Game({ quest, onClickAnswer, correctAnswers, totalQuestions }) {
 
   return (
     <div className="game">
-      <h2>{decodeTitle || <Skeleton />}</h2>
+      <h2>
+        {decodeTitle || (
+          <Skeleton count={1} width={100} style={{ width: '600px' }} />
+        )}
+      </h2>
       <ul>
         {answers.map((answer) => (
           <li
@@ -45,7 +49,6 @@ function Game({ quest, onClickAnswer, correctAnswers, totalQuestions }) {
                 ? 'incorrect'
                 : '')
             }`}
-            // className={selectedAnswer === answer ? 'correct' : ''}
             key={answer}
           >
             {he.decode(answer)}

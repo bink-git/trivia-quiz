@@ -12,12 +12,9 @@
 }
 
 body {
-  margin: 0;
+  margin: 0 auto;
   font-family: Arial, Helvetica, sans-serif;
   background-color: #6a5be2;
-  display: flex;
-  align-items: center;
-  justify-content: center;
   padding-inline: 20px;
 }
 
@@ -41,13 +38,14 @@ body {
   width: 100%;
   border-radius: 30px;
   padding: 20px;
-  background-color: #1cb669;
+  background-color: #fff;
   position: relative;
   margin-bottom: 40px;
   margin: 0 auto;
 
   h2 {
     margin-bottom: 20px;
+    width: 100%;
   }
 
   .result {
@@ -65,29 +63,6 @@ body {
       width: 150px;
     }
   }
-
-  // ul {
-  //   list-style: none;
-  //   padding: 0;
-
-  //   li {
-  //     padding: 15px;
-  //     border: 2px solid rgba(0, 0, 0, 0.1);
-  //     border-radius: 15px;
-  //     margin-bottom: 10px;
-  //     cursor: pointer;
-  //     transition: all 0.1s ease-in-out;
-
-  //     &.incorrect {
-  //       border: 2px solid rgba(255, 0, 0, 0.3);
-  //       background-color: rgba(255, 0, 0, 0.3);
-  //     }
-  //     &.correct {
-  //       background-color: rgba(8, 224, 73, 0.3);
-  //       border: 2px solid rgba(8, 224, 73, 0.3);
-  //     }
-  //   }
-  // }
 }
 
 .game {
@@ -192,12 +167,12 @@ header {
 }
 
 .game-skeleton {
-  background-color: #ff006e;
+  // width: 100%;
+  // max-width: 460px;
   display: flex;
   flex-direction: column;
+  flex: 1;
   margin-bottom: 40px;
-  width: 100%;
-  min-width: 500px;
 
   ul {
     list-style: none;
