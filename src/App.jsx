@@ -144,7 +144,7 @@ function App() {
   const quest = data && data[step];
 
   return (
-    <>
+    <div className="container">
       <header>
         <img src={logo} alt="logo" className="logo" />
       </header>
@@ -215,7 +215,7 @@ function App() {
           statistic={statistic}
         />
       )}
-    </>
+    </div>
   );
 }
 
