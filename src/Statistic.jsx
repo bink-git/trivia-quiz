@@ -1,6 +1,6 @@
 import React from 'react';
 
-const Statistic = ({ correctAnswers, totalQuestions, statistic }) => {
+const Statistic = ({ statistic }) => {
   return (
     <div className="statistic">
       <ul>
