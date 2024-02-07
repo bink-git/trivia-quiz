@@ -1,7 +1,6 @@
 import { useEffect, useState } from 'react';
 import he from 'he';
 import Skeleton from 'react-loading-skeleton';
-import 'react-loading-skeleton/dist/skeleton.css';
 
 function Game({ quest, onClickAnswer, correctAnswers, totalQuestions }) {
   const { incorrect_answers, correct_answer, question } = quest;
@@ -20,10 +19,6 @@ function Game({ quest, onClickAnswer, correctAnswers, totalQuestions }) {
       setSelectedAnswer(answer);
     }
   };
-  // const handleAnswerClick = (answer) => {
-  //   onClickAnswer(answer);
-  //   setSelectedAnswer(answer);
-  // };
 
   const answers = [correct_answer, ...incorrect_answers].sort();
 

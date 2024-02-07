@@ -27,7 +27,7 @@ function App() {
   const [isStatisic, setIsStatisic] = useState(false);
   const [statistic, setStatistic] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [totalQuestions, setTotalQuestions] = useState(1);
+  const [totalQuestions, setTotalQuestions] = useState(0);
 
   const { code, message } = RESPONSE_CODES;
 
@@ -44,6 +44,7 @@ function App() {
   const onClickNext = async () => {
     setLoading(true);
     await handleFetch();
+
     setLoading(false);
   };
 
@@ -51,6 +52,7 @@ function App() {
     if (data[step].correct_answer === answer) {
       setCorrectAnswers(correctAnswers + 1);
     }
+    setTotalQuestions((total) => total + 1);
   };
 
   const onStart = () => {
@@ -102,7 +104,6 @@ function App() {
       setLoading(true);
       const res = await axios.get(`${API_URL}&token=${token}`);
       setData(res.data.results);
-      setTotalQuestions((total) => total + 1);
     } catch (error) {
       if (resCode === code) {
         notifyToken(resMessage);
