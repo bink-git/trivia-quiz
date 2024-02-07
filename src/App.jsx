@@ -11,7 +11,7 @@ import Statistic from './Statistic';
 import Skeleton from 'react-loading-skeleton';
 import 'react-loading-skeleton/dist/skeleton.css';
 
-import { API_URL, REQUEST_TOKEN, RESPONSE_CODES } from './constants';
+import { API_URL, REQUEST_TOKEN, RESPONSE_CODES, MAIN_URL } from './constants';
 
 import logo from './assets/logo.png';
 import GameSkeleton from './GameSkeleton';
@@ -28,6 +28,9 @@ function App() {
   const [statistic, setStatistic] = useState([]);
   const [loading, setLoading] = useState(true);
   const [totalQuestions, setTotalQuestions] = useState(0);
+  const [difficulty, setDifficulty] = useState('easy');
+
+  const API_URL = `${MAIN_URL}?amount=1&category=9&difficulty=${difficulty}&type=multiple`;
 
   const { code, message } = RESPONSE_CODES;
 
@@ -40,6 +43,10 @@ function App() {
 
   const notifyFetch = () => toast.error('Error fetching data');
   const notifyToken = (message) => toast.error(message);
+
+  const handleDifficulty = (select) => {
+    setDifficulty(select);
+  };
 
   const onClickNext = async () => {
     setLoading(true);
@@ -138,12 +145,6 @@ function App() {
     }
   };
 
-  // useEffect(() => {
-  //   if (!token) {
-  //     fetchData();
-  //   }
-  // }, [token]);
-
   const quest = data && data[step];
 
   return (
@@ -166,7 +167,9 @@ function App() {
           transition:Bounce
         />
 
-        {start && reset && <Welcome onStart={onStart} />}
+        {start && reset && (
+          <Welcome onStart={onStart} onDifficulty={handleDifficulty} />
+        )}
 
         {!start && quest && !showResult && (
           <>

@@ -124,6 +124,20 @@ header {
   justify-content: center;
 }
 
+select {
+  font-size: 20px;
+  padding: 10px;
+  border-radius: 20px;
+  border: 2px solid #4252e2;
+  outline: none;
+}
+
+label {
+  font-size: 16px;
+  font-weight: bold;
+  color: #4252e2;
+}
+
 .logo {
   width: 150px;
   margin-block: 80px;
