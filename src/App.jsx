@@ -60,6 +60,7 @@ function App() {
     setReset(false);
     setShowResult(false);
     setIsStatisic(false);
+    fetchData();
   };
 
   const onReset = () => {
@@ -112,35 +113,36 @@ function App() {
     }
   };
 
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const userToken = await axios.get(REQUEST_TOKEN);
-        const { token, response_code, response_message } = userToken.data;
+  const fetchData = async () => {
+    try {
+      const userToken = await axios.get(REQUEST_TOKEN);
+      const { token, response_code, response_message } = userToken.data;
 
-        resCode = response_code;
-        resMessage = response_message;
+      resCode = response_code;
+      resMessage = response_message;
 
-        setToken(token);
+      setToken(token);
 
-        const res = await axios.get(`${API_URL}&token=${token}`);
-        setData(res.data.results);
-      } catch (error) {
-        if (resCode === code) {
-          notifyToken(resMessage);
-          setToken('');
-        } else {
-          notifyFetch();
-        }
-      } finally {
-        setLoading(false);
+      const res = await axios.get(`${API_URL}&token=${token}`);
+      console.log(res.data.results);
+      setData(res.data.results);
+    } catch (error) {
+      if (resCode === code) {
+        notifyToken(resMessage);
+        setToken('');
+      } else {
+        notifyFetch();
       }
-    };
-
-    if (!token) {
-      fetchData();
+    } finally {
+      setLoading(false);
     }
-  }, []);
+  };
+
+  // useEffect(() => {
+  //   if (!token) {
+  //     fetchData();
+  //   }
+  // }, [token]);
 
   const quest = data && data[step];
 
