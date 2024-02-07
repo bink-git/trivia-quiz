@@ -131,7 +131,6 @@ function App() {
       setToken(token);
 
       const res = await axios.get(`${API_URL}&token=${token}`);
-      console.log(res.data.results);
       setData(res.data.results);
     } catch (error) {
       if (resCode === code) {
