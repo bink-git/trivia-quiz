@@ -1,35 +1,111 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+import { useState, useEffect } from 'react';
+import axios from 'axios';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+
+import Result from './Result';
+import Game from './Game';
+import Welcome from './Welcome';
+
+import { API_URL } from './constants';
+
+import logo from './assets/logo.png';
 
 function App() {
-  const [count, setCount] = useState(0)
+  const [data, setData] = useState([]);
+  const [step, setStep] = useState(0);
+  const [correctAnswers, setCorrectAnswers] = useState(0);
+  const [start, setStart] = useState(true);
+  const [reset, setReset] = useState(true);
+
+  const notify = () => toast.error('Error fetching data');
+
+  const onClickNext = () => {
+    setStep(step + 1);
+  };
+
+  const onClickAnswer = (answer) => {
+    if (data[step].correct_answer === answer) {
+      setCorrectAnswers(correctAnswers + 1);
+    }
+  };
+
+  const onStart = () => {
+    setStart(false);
+    setReset(false);
+  };
+
+  const onReset = () => {
+    setReset(true);
+    setStep(0);
+    setCorrectAnswers(0);
+    setStart(true);
+  };
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const res = await axios.get(API_URL);
+        setData(res.data.results);
+      } catch (error) {
+        notify();
+      }
+    };
+
+    fetchData();
+  }, []);
+
+  const quest = data && data[step];
 
   return (
     <>
-      <div>
-        <a href="https://vitejs.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
+      <header>
+        <img src={logo} alt="logo" className="logo" />
+      </header>
+      <div className="App">
+        <ToastContainer
+          position="top-center"
+          autoClose={3000}
+          hideProgressBar={false}
+          newestOnTop={false}
+          closeOnClick
+          rtl={false}
+          pauseOnFocusLoss
+          draggable
+          pauseOnHover
+          theme="colored"
+          transition:Bounce
+        />
+
+        {start && reset && <Welcome onStart={onStart} />}
+        {!start && quest && (
+          <>
+            <p className="quest-step">
+              Question: {step + 1} / {data.length}
+            </p>
+
+            <Game
+              quest={quest}
+              onClickAnswer={onClickAnswer}
+              correctAnswers={correctAnswers}
+              onClickNext={onClickNext}
+            />
+            <button className="next" onClick={onClickNext}>
+              {step === data.length - 1 ? 'Finish Quiz' : 'Next'}
+            </button>
+          </>
+        )}
+
+        {step === data.length && (
+          <Result
+            correctAnswers={correctAnswers}
+            reset={reset}
+            onReset={onReset}
+          />
+        )}
       </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.jsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
     </>
-  )
+  );
 }
 
-export default App
+export default App;

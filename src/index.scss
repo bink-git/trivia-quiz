@@ -1,0 +1,125 @@
+body {
+  margin: 0;
+  font-family: Arial, Helvetica, sans-serif;
+  background-color: #6a5be2;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.App {
+  max-width: 500px;
+  width: 100%;
+  border-radius: 30px;
+  padding: 20px;
+  background-color: #fff;
+  position: relative;
+  margin-inline: 20px;
+  margin-bottom: 40px;
+
+  .result {
+    text-align: center;
+
+    button {
+      font-weight: bold;
+      font-family: 'Nunito', sans-serif;
+      border-radius: 30px;
+      border: 0;
+      padding: 15px 30px;
+      font-size: 20px;
+      background-color: darken(#ff006e, 3%);
+      color: #fff;
+      margin-top: 20px;
+      cursor: pointer;
+    }
+
+    h2 {
+      margin-bottom: 0;
+    }
+
+    img {
+      width: 150px;
+    }
+  }
+
+  h1 {
+    margin-top: 50px;
+  }
+
+  ul {
+    list-style: none;
+    padding: 0;
+
+    li {
+      padding: 15px;
+      border: 2px solid rgba(0, 0, 0, 0.1);
+      border-radius: 15px;
+      margin-bottom: 10px;
+      cursor: pointer;
+      transition: all 0.1s ease-in-out;
+
+      &.incorrect {
+        border: 2px solid rgba(255, 0, 0, 0.3);
+        background-color: rgba(255, 0, 0, 0.3);
+      }
+      &.correct {
+        background-color: rgba(8, 224, 73, 0.3);
+        border: 2px solid rgba(8, 224, 73, 0.3);
+      }
+    }
+  }
+}
+
+.welcome {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  gap: 20px;
+
+  p {
+    margin: 0;
+    font-size: 40px;
+    font-weight: bold;
+    color: #4252e2;
+    text-align: center;
+  }
+
+  button {
+    font-weight: bold;
+    border-radius: 30px;
+    border: 0;
+    padding: 15px 30px;
+    font-size: 20px;
+    background-color: darken(#ff006e, 3%);
+    color: #fff;
+    cursor: pointer;
+  }
+}
+
+header {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.logo {
+  width: 150px;
+  margin-block: 80px;
+}
+
+.next {
+  font-weight: bold;
+  border-radius: 30px;
+  border: 0;
+  padding: 10px 20px;
+  font-size: 20px;
+  background-color: darken(#ff006e, 3%);
+  color: #fff;
+  cursor: pointer;
+  margin-top: 20px;
+}
+
+.quest-step {
+  margin-bottom: 30px;
+}
