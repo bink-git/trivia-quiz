@@ -6,7 +6,9 @@ function Result({ correctAnswers, onReset, totalQuestions }) {
       <p>
         You answered {correctAnswers} of {totalQuestions} questions
       </p>
-      <button onClick={() => onReset()}>Try again</button>
+      <button className="btn" onClick={() => onReset()}>
+        Try again
+      </button>
     </div>
   );
 }
