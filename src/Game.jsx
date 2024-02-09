@@ -1,7 +1,8 @@
 import { useEffect, useState } from 'react';
 import he from 'he';
+import Skeleton from 'react-loading-skeleton';
 
-function Game({ quest, onClickAnswer }) {
+function Game({ quest, onClickAnswer, correctAnswers, totalQuestions }) {
   const { incorrect_answers, correct_answer, question } = quest;
 
   const [selectedAnswer, setSelectedAnswer] = useState(null);
@@ -18,16 +19,16 @@ function Game({ quest, onClickAnswer }) {
       setSelectedAnswer(answer);
     }
   };
-  // const handleAnswerClick = (answer) => {
-  //   onClickAnswer(answer);
-  //   setSelectedAnswer(answer);
-  // };
 
   const answers = [correct_answer, ...incorrect_answers].sort();
 
   return (
-    <>
-      <h2>{decodeTitle}</h2>
+    <div className="game">
+      <h2>
+        {decodeTitle || (
+          <Skeleton count={1} width={100} style={{ width: '600px' }} />
+        )}
+      </h2>
       <ul>
         {answers.map((answer) => (
           <li
@@ -43,14 +44,13 @@ function Game({ quest, onClickAnswer }) {
                 ? 'incorrect'
                 : '')
             }`}
-            // className={selectedAnswer === answer ? 'correct' : ''}
             key={answer}
           >
             {he.decode(answer)}
           </li>
         ))}
       </ul>
-    </>
+    </div>
   );
 }
 
