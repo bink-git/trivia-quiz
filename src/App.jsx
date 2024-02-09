@@ -7,10 +7,11 @@ import Result from './Result';
 import Game from './Game';
 import Welcome from './Welcome';
 import Statistic from './Statistic';
-
-import { API_URL, REQUEST_TOKEN, RESPONSE_CODES } from './constants';
+import GameSkeleton from './GameSkeleton';
 
 import logo from './assets/logo.png';
+
+import { REQUEST_TOKEN, RESPONSE_CODES, MAIN_URL } from './constants';
 
 function App() {
   const [data, setData] = useState([]);
@@ -22,28 +23,36 @@ function App() {
   const [token, setToken] = useState('');
   const [isStatisic, setIsStatisic] = useState(false);
   const [statistic, setStatistic] = useState([]);
-  // const [resCode, setResCode] = useState('');
+  const [loading, setLoading] = useState(true);
+  const [totalQuestions, setTotalQuestions] = useState(0);
+  const [difficulty, setDifficulty] = useState('easy');
+
+  const API_URL = `${MAIN_URL}?amount=1&category=9&difficulty=${difficulty}&type=multiple`;
 
   const { code, message } = RESPONSE_CODES;
 
   let resCode;
   let resMessage;
 
-  // const { code, message } = RESPONSE_CODES.find(
-  //   (item) => item.code === resCode
-  // );
-
   const notifyFetch = () => toast.error('Error fetching data');
   const notifyToken = (message) => toast.error(message);
 
-  const onClickNext = () => {
-    setStep(step + 1);
+  const handleDifficulty = (select) => {
+    setDifficulty(select);
+  };
+
+  const onClickNext = async () => {
+    setLoading(true);
+    await handleFetch();
+
+    setLoading(false);
   };
 
   const onClickAnswer = (answer) => {
     if (data[step].correct_answer === answer) {
       setCorrectAnswers(correctAnswers + 1);
     }
+    setTotalQuestions((total) => total + 1);
   };
 
   const onStart = () => {
@@ -51,6 +60,7 @@ function App() {
     setReset(false);
     setShowResult(false);
     setIsStatisic(false);
+    fetchData();
   };
 
   const onReset = () => {
@@ -60,6 +70,7 @@ function App() {
     setStart(true);
     setShowResult(false);
     setIsStatisic(false);
+    setTotalQuestions(1);
   };
 
   const onStatistic = () => {
@@ -78,6 +89,7 @@ function App() {
     const newData = {
       date: date.toLocaleString(),
       correctAnswers,
+      totalQuestions,
     };
     setStatistic([...statistic, newData]);
     localStorage.setItem(
@@ -88,39 +100,47 @@ function App() {
     setIsStatisic(false);
   };
 
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const userToken = await axios.get(REQUEST_TOKEN);
-        const { token, response_code, response_message } = userToken.data;
-
-        resCode = response_code;
-        resMessage = response_message;
-
-        setToken(token);
-
-        const res = await axios.get(`${API_URL}&token=${token}`);
-        setData(res.data.results);
-      } catch (error) {
-        if (resCode === code) {
-          notifyToken(resMessage);
-          setToken('');
-        } else {
-          notifyFetch();
-        }
+  const handleFetch = async () => {
+    try {
+      setLoading(true);
+      const res = await axios.get(`${API_URL}&token=${token}`);
+      setData(res.data.results);
+    } catch (error) {
+      if (resCode === code) {
+        notifyToken(resMessage);
+        setLoading(false);
       }
-    };
-
-    if (!token) {
-      fetchData();
     }
-  }, []);
+  };
+
+  const fetchData = async () => {
+    try {
+      const userToken = await axios.get(REQUEST_TOKEN);
+      const { token, response_code, response_message } = userToken.data;
+
+      resCode = response_code;
+      resMessage = response_message;
+
+      setToken(token);
+
+      const res = await axios.get(`${API_URL}&token=${token}`);
+      setData(res.data.results);
+    } catch (error) {
+      if (resCode === code) {
+        notifyToken(resMessage);
+        setToken('');
+      } else {
+        notifyFetch();
+      }
+    } finally {
+      setLoading(false);
+    }
+  };
 
   const quest = data && data[step];
-  const totalQuestions = data.length;
 
   return (
-    <>
+    <div className="container">
       <header>
         <img src={logo} alt="logo" className="logo" />
       </header>
@@ -139,27 +159,30 @@ function App() {
           transition:Bounce
         />
 
-        {start && reset && <Welcome onStart={onStart} />}
+        {start && reset && (
+          <Welcome onStart={onStart} onDifficulty={handleDifficulty} />
+        )}
+
         {!start && quest && !showResult && (
           <>
-            <p className="quest-step">
-              Question: {step + 1} / {data.length}
+            <p className="correct">
+              Correct Answers: {correctAnswers} / {totalQuestions}
             </p>
+            {loading && !start ? (
+              <GameSkeleton />
+            ) : (
+              <Game
+                quest={quest}
+                onClickAnswer={onClickAnswer}
+                correctAnswers={correctAnswers}
+                onClickNext={onClickNext}
+              />
+            )}
 
-            <Game
-              quest={quest}
-              onClickAnswer={onClickAnswer}
-              correctAnswers={correctAnswers}
-              onClickNext={onClickNext}
-              totalQuestions={totalQuestions}
-            />
             <div className="buttons">
               <button className="next btn" onClick={onClickNext}>
-                {step === data.length - 1 ? 'Finish Quiz' : 'Next'}
+                Next
               </button>
-              {/* <button className="btn" onClick={() => setShowResult(true)}>
-                Finish
-              </button> */}
               <button className="btn" onClick={() => handleStatistic()}>
                 Finish
               </button>
@@ -190,7 +213,7 @@ function App() {
           statistic={statistic}
         />
       )}
-    </>
+    </div>
   );
 }
 
