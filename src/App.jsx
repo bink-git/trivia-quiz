@@ -7,14 +7,11 @@ import Result from './Result';
 import Game from './Game';
 import Welcome from './Welcome';
 import Statistic from './Statistic';
-
-import Skeleton from 'react-loading-skeleton';
-import 'react-loading-skeleton/dist/skeleton.css';
-
-import { API_URL, REQUEST_TOKEN, RESPONSE_CODES, MAIN_URL } from './constants';
+import GameSkeleton from './GameSkeleton';
 
 import logo from './assets/logo.png';
-import GameSkeleton from './GameSkeleton';
+
+import { REQUEST_TOKEN, RESPONSE_CODES, MAIN_URL } from './constants';
 
 function App() {
   const [data, setData] = useState([]);
@@ -36,10 +33,6 @@ function App() {
 
   let resCode;
   let resMessage;
-
-  // const { code, message } = RESPONSE_CODES.find(
-  //   (item) => item.code === resCode
-  // );
 
   const notifyFetch = () => toast.error('Error fetching data');
   const notifyToken = (message) => toast.error(message);
