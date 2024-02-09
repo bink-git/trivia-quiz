@@ -7,14 +7,11 @@ import Result from './Result';
 import Game from './Game';
 import Welcome from './Welcome';
 import Statistic from './Statistic';
-
-import Skeleton from 'react-loading-skeleton';
-import 'react-loading-skeleton/dist/skeleton.css';
-
-import { API_URL, REQUEST_TOKEN, RESPONSE_CODES } from './constants';
+import GameSkeleton from './GameSkeleton';
 
 import logo from './assets/logo.png';
-import GameSkeleton from './GameSkeleton';
+
+import { REQUEST_TOKEN, RESPONSE_CODES, MAIN_URL } from './constants';
 
 function App() {
   const [data, setData] = useState([]);
@@ -28,18 +25,21 @@ function App() {
   const [statistic, setStatistic] = useState([]);
   const [loading, setLoading] = useState(true);
   const [totalQuestions, setTotalQuestions] = useState(0);
+  const [difficulty, setDifficulty] = useState('easy');
+
+  const API_URL = `${MAIN_URL}?amount=1&category=9&difficulty=${difficulty}&type=multiple`;
 
   const { code, message } = RESPONSE_CODES;
 
   let resCode;
   let resMessage;
 
-  // const { code, message } = RESPONSE_CODES.find(
-  //   (item) => item.code === resCode
-  // );
-
   const notifyFetch = () => toast.error('Error fetching data');
   const notifyToken = (message) => toast.error(message);
+
+  const handleDifficulty = (select) => {
+    setDifficulty(select);
+  };
 
   const onClickNext = async () => {
     setLoading(true);
@@ -124,7 +124,6 @@ function App() {
       setToken(token);
 
       const res = await axios.get(`${API_URL}&token=${token}`);
-      console.log(res.data.results);
       setData(res.data.results);
     } catch (error) {
       if (resCode === code) {
@@ -137,12 +136,6 @@ function App() {
       setLoading(false);
     }
   };
-
-  // useEffect(() => {
-  //   if (!token) {
-  //     fetchData();
-  //   }
-  // }, [token]);
 
   const quest = data && data[step];
 
@@ -166,7 +159,9 @@ function App() {
           transition:Bounce
         />
 
-        {start && reset && <Welcome onStart={onStart} />}
+        {start && reset && (
+          <Welcome onStart={onStart} onDifficulty={handleDifficulty} />
+        )}
 
         {!start && quest && !showResult && (
           <>

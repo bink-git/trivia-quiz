@@ -1,4 +1,4 @@
-const MAIN_URL = 'https://opentdb.com/api.php';
+export const MAIN_URL = 'https://opentdb.com/api.php';
 
 export const API_URL = `${MAIN_URL}?amount=1&category=9&difficulty=easy&type=multiple`;
 
