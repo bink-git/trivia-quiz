@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import he from 'he';
 import Skeleton from 'react-loading-skeleton';
 
-function Game({ quest, onClickAnswer, correctAnswers, totalQuestions }) {
+function Game({ quest, onClickAnswer }) {
   const { incorrect_answers, correct_answer, question } = quest;
 
   const [selectedAnswer, setSelectedAnswer] = useState(null);
