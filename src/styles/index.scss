@@ -211,3 +211,41 @@ label {
 .skeleton-title {
   height: 60px;
 }
+
+.login-form {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+
+  input {
+    padding: 10px;
+    border-radius: 20px;
+    border: 2px solid #4252e2;
+    outline: none;
+    font-size: 20px;
+  }
+
+  label {
+    font-size: 18px;
+    color: #fff;
+    text-align: center;
+  }
+}
+
+.error-msg,
+.info-msg {
+  width: 100%;
+  font-size: 18px;
+  font-weight: 600;
+  margin-top: 10px;
+  animation: fadeIn 1s;
+  text-align: center;
+}
+
+.error-msg {
+  color: #ff006e;
+}
+
+.info-msg {
+  color: #a9f16e;
+}
