@@ -15,7 +15,7 @@ import GameSkeleton from './components/GameSkeleton';
 import Loader from './components/Loader';
 
 import { REQUEST_TOKEN, RESPONSE_CODES, MAIN_URL } from './utils/constants';
-import UserContent from './components/Usercontent';
+import UserContent from './components/UserContent';
 import LoggedIn from './LoggedIn';
 
 function Home() {
