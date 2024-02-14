@@ -1,5 +1,4 @@
-const UserContent = ({ user, handleLogout }) => {
-  console.log(user);
+const UserInfo = ({ user, handleLogout }) => {
   return (
     <div className="user-content">
       <p>User: {user.email}</p>
@@ -10,4 +9,4 @@ const UserContent = ({ user, handleLogout }) => {
   );
 };
 
-export default UserContent;
+export default UserInfo;

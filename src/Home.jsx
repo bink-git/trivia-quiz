@@ -15,7 +15,7 @@ import GameSkeleton from './components/GameSkeleton';
 import Loader from './components/Loader';
 
 import { REQUEST_TOKEN, RESPONSE_CODES, MAIN_URL } from './utils/constants';
-import UserContent from './components/UserContent';
+import UserInfo from './components/UserInfo';
 import LoggedIn from './LoggedIn';
 
 function Home() {
@@ -187,7 +187,7 @@ function Home() {
 
             {!start && quest && !showResult && (
               <>
-                <UserContent user={user} handleLogout={handleLogout} />
+                <UserInfo user={user} handleLogout={handleLogout} />
                 <p className="correct">
                   Correct Answers: {correctAnswers} / {totalQuestions}
                 </p>
