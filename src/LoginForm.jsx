@@ -1,17 +1,12 @@
 import { sendSignInLinkToEmail } from 'firebase/auth';
 import { auth } from './utils/firebaseConfig';
 import Header from './components/Header';
+import { ToastContainer, toast } from 'react-toastify';
 
-const LoginForm = ({
-  userEmail,
-  setUserEmail,
-  isLoading,
-  setIsLoading,
-  errorMessage,
-  setErrorMessage,
-  setInfoMessage,
-  infoMessage,
-}) => {
+const LoginForm = ({ userEmail, setUserEmail, isLoading, setIsLoading }) => {
+  const notifyError = (message) => toast.error(message);
+  const notifyInfo = (message) => toast.success(message);
+
   const handleLogin = async (event) => {
     event.preventDefault();
     setIsLoading(true);
@@ -21,9 +16,9 @@ const LoginForm = ({
         handleCodeInApp: true,
       });
       localStorage.setItem('email', userEmail);
-      setInfoMessage('We have sent you an email with a link to sign in');
+      notifyInfo('We have sent you an email with a link to sign in');
     } catch (error) {
-      setErrorMessage(error.message);
+      notifyError(error.message);
     } finally {
       setIsLoading(false);
     }
@@ -31,8 +26,20 @@ const LoginForm = ({
 
   return (
     <>
-      <Header />
       <div className="container">
+        <ToastContainer
+          position="top-center"
+          autoClose={5000}
+          hideProgressBar={false}
+          newestOnTop={false}
+          closeOnClick
+          rtl={false}
+          pauseOnFocusLoss
+          pauseOnHover
+          theme="colored"
+          transition:Bounce
+        />
+        <Header />
         <form className="login-form" onSubmit={handleLogin}>
           <label>To start the game, enter your email, please</label>
           <input
@@ -44,11 +51,9 @@ const LoginForm = ({
               setUserEmail(e.target.value);
             }}
           />
-          <button type="submit" className="btn btn-success btn-md">
+          <button type="submit" className="btn">
             {isLoading ? 'Logging you in' : 'Login'}
           </button>
-          {errorMessage && <div className="error-msg">{errorMessage}</div>}
-          {infoMessage && <div className="info-msg">{infoMessage}</div>}
         </form>
       </div>
     </>

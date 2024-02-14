@@ -4,15 +4,17 @@ import { auth } from './utils/firebaseConfig';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { isSignInWithEmailLink, signInWithEmailLink } from 'firebase/auth';
 import LoginForm from './LoginForm';
+import Loader from './components/Loader';
 
 const LoggedIn = () => {
   const [user] = useAuthState(auth);
-  const navigate = useNavigate();
   const { search } = useLocation();
   const [userEmail, setUserEmail] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const [errorMessage, setErrorMessage] = useState('');
   const [infoMessage, setInfoMessage] = useState('');
+
+  const navigate = useNavigate();
 
   useEffect(() => {
     const authenticateUser = async () => {
@@ -48,13 +50,19 @@ const LoggedIn = () => {
   }, [user, search, navigate]);
 
   if (isLoading) {
-    return <div>Loading...</div>;
+    return (
+      <div className="container">
+        <Loader />
+      </div>
+    );
   }
 
   return (
-    <div className="box">
+    <div>
       {user ? (
-        <div>Please wait...</div>
+        <>
+          <p>Please wait...</p>
+        </>
       ) : (
         <LoginForm
           userEmail={userEmail}
@@ -62,7 +70,6 @@ const LoggedIn = () => {
           isLoading={isLoading}
           setIsLoading={setIsLoading}
           errorMessage={errorMessage}
-          setErrorMessage={setErrorMessage}
           setInfoMessage={setInfoMessage}
           infoMessage={infoMessage}
         />

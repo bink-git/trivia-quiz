@@ -249,3 +249,21 @@ label {
 .info-msg {
   color: #a9f16e;
 }
+
+.user-content {
+  display: flex;
+  justify-content: space-between;
+}
+
+.btn-logout {
+  display: block;
+  border-radius: 20px;
+  border: 0;
+  padding: 10px;
+  font-size: 16px;
+  color: #ff006e;
+  cursor: pointer;
+  &:hover {
+    text-decoration: underline;
+  }
+}
