@@ -1,5 +1,3 @@
-import React from 'react';
-
 const Statistic = ({ statistic }) => {
   return (
     <div className="statistic">
