@@ -157,7 +157,7 @@ function Home() {
     const user = auth.currentUser;
     if (user) {
       try {
-        const date = new Date().toISOString();
+        const date = Timestamp.fromDate(new Date());
         const newData = {
           userId: user.uid,
           correctAnswers,
