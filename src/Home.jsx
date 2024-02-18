@@ -5,7 +5,7 @@ import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { useAuthState } from 'react-firebase-hooks/auth';
 import { auth, db } from './utils/firebaseConfig';
-import { getDocs, collection, addDoc } from 'firebase/firestore';
+import { getDocs, collection, addDoc, orderBy } from 'firebase/firestore';
 
 import Header from './components/Header';
 import Result from './components/Result';
@@ -55,7 +55,10 @@ function Home() {
   useEffect(() => {
     const getResults = async () => {
       try {
-        const data = await getDocs(resultsCollectionRef);
+        const data = await getDocs(
+          resultsCollectionRef,
+          orderBy('date', 'desc')
+        );
         const filtredData = data.docs.map((doc) => ({
           ...doc.data(),
           id: doc.id,
