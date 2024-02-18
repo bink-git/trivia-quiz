@@ -78,7 +78,7 @@ function Home() {
     };
 
     getResults();
-  }, [resultsCollectionRef]);
+  }, []);
 
   const handleLogout = async () => {
     try {

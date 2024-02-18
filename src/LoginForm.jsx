@@ -12,7 +12,7 @@ const LoginForm = ({ userEmail, setUserEmail, isLoading, setIsLoading }) => {
     setIsLoading(true);
     try {
       await sendSignInLinkToEmail(auth, userEmail, {
-        url: 'https://trivia-quiz-firebase-history.vercel.app/',
+        url: 'http://localhost:5173/',
         handleCodeInApp: true,
       });
       localStorage.setItem('email', userEmail);
