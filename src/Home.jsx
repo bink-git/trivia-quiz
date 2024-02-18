@@ -153,21 +153,43 @@ function Home() {
     setIsStatisic(false);
   };
 
-  const onResults = async () => {
-    const date = Timestamp.fromDate(new Date());
+  const logUserStatistic = async (correctAnswers, totalQuestions) => {
     const user = auth.currentUser;
-    console.log(user);
-    const newData = {
-      date,
-      correctAnswers,
-      totalQuestions,
-      userId: user.uid,
-    };
-    setResults([...results, newData]);
-    await addDoc(resultsCollectionRef, newData);
-    setShowResult(true);
-    setIsStatisic(false);
+    if (user) {
+      try {
+        const date = new Date().toISOString();
+        const newData = {
+          userId: user.uid,
+          correctAnswers,
+          totalQuestions,
+          date,
+        };
+        await addDoc(collection(db, 'userStatistics'), newData);
+      } catch (error) {
+        console.error('Error logging user statistic:', error);
+      }
+    }
   };
+
+  const onResults = async () => {
+    logUserStatistic(correctAnswers, totalQuestions);
+  };
+
+  // const onResults = async () => {
+  //   const date = Timestamp.fromDate(new Date());
+  //   const user = auth.currentUser;
+  //   console.log(user);
+  //   const newData = {
+  //     date,
+  //     correctAnswers,
+  //     totalQuestions,
+  //     userId: user.uid,
+  //   };
+  //   setResults([...results, newData]);
+  //   await addDoc(resultsCollectionRef, newData);
+  //   setShowResult(true);
+  //   setIsStatisic(false);
+  // };
 
   const handleFetch = async () => {
     try {
