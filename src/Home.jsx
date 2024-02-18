@@ -164,7 +164,7 @@ function Home() {
           totalQuestions,
           date,
         };
-        await addDoc(collection(db, 'userStatistics'), newData);
+        await addDoc(collection(db, 'history'), newData);
       } catch (error) {
         console.error('Error logging user statistic:', error);
       }
