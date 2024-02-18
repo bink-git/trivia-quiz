@@ -4,7 +4,8 @@ import axios from 'axios';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { useAuthState } from 'react-firebase-hooks/auth';
-import { auth } from './utils/firebaseConfig';
+import { auth, db } from './utils/firebaseConfig';
+import { getDocs, collection, addDoc } from 'firebase/firestore';
 
 import Header from './components/Header';
 import Result from './components/Result';
@@ -31,6 +32,7 @@ function Home() {
   const [isLoading, setIsLoading] = useState(true);
   const [totalQuestions, setTotalQuestions] = useState(0);
   const [difficulty, setDifficulty] = useState('easy');
+  const [results, setResults] = useState([]);
 
   const API_URL = `${MAIN_URL}?amount=1&category=9&difficulty=${difficulty}&type=multiple`;
 
@@ -47,6 +49,26 @@ function Home() {
   const [user, loading, error] = useAuthState(auth);
 
   const navigate = useNavigate();
+
+  const resultsCollectionRef = collection(db, 'history');
+
+  useEffect(() => {
+    const getResults = async () => {
+      try {
+        const data = await getDocs(resultsCollectionRef);
+        const filtredData = data.docs.map((doc) => ({
+          ...doc.data(),
+          id: doc.id,
+        }));
+        setResults(filtredData);
+        console.log(filtredData);
+      } catch (error) {
+        notifyError(error.message);
+      }
+    };
+
+    getResults();
+  }, []);
 
   const handleLogout = async () => {
     try {
@@ -119,6 +141,15 @@ function Home() {
     );
     setShowResult(true);
     setIsStatisic(false);
+  };
+
+  const onResults = async () => {
+    const date = new Date();
+    await addDoc(resultsCollectionRef, {
+      date: date.toLocaleString(),
+      correctAnswers,
+      totalQuestions,
+    });
   };
 
   const handleFetch = async () => {
@@ -206,7 +237,7 @@ function Home() {
                   <button className="next btn" onClick={onClickNext}>
                     Next
                   </button>
-                  <button className="btn" onClick={() => handleStatistic()}>
+                  <button className="btn" onClick={() => onResults()}>
                     Finish
                   </button>
                 </div>
