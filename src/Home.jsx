@@ -150,6 +150,7 @@ function Home() {
       correctAnswers,
       totalQuestions,
     };
+    setResults([...results, newData]);
     await addDoc(resultsCollectionRef, newData);
     setShowResult(true);
     setIsStatisic(false);
@@ -277,6 +278,7 @@ function Home() {
           correctAnswers={correctAnswers}
           totalQuestions={totalQuestions}
           statistic={statistic}
+          results={results}
         />
       )}
     </div>
