@@ -14,7 +14,7 @@ const Statistic = ({ statistic, results }) => {
       <ul>
         {results.reverse().map((entry, index) => (
           <li key={index}>
-            <p>Date: {entry.date.toDate().toLacaleString()},</p>
+            <p>Date: {entry.date.toDate().toLocaleString()},</p>
             <p>
               Correct Answers: {entry.correctAnswers} / {entry.totalQuestions}
             </p>
