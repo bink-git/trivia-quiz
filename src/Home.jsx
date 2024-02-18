@@ -48,7 +48,6 @@ function Home() {
   let resMessage;
 
   const notifyFetch = () => toast.error('Error fetching data');
-  const notifyToken = (message) => toast.error(message);
   const notifySuccess = () => toast.success('Successfully logged out');
   const notifyError = (message) => toast.error(message);
 
@@ -153,7 +152,7 @@ function Home() {
   };
 
   const onResults = async () => {
-    const date = Timestamp.fromDate(new Date());
+    const date = new Date();
     const newData = {
       date: date.toLocaleString(),
       correctAnswers,
@@ -172,7 +171,7 @@ function Home() {
       setData(res.data.results);
     } catch (error) {
       if (resCode === code) {
-        notifyToken(resMessage);
+        notifyError(resMessage);
         setIsLoading(false);
       }
     }
@@ -192,7 +191,7 @@ function Home() {
       setData(res.data.results);
     } catch (error) {
       if (resCode === code) {
-        notifyToken(resMessage);
+        notifyError(resMessage);
         setToken('');
       } else {
         notifyFetch();
