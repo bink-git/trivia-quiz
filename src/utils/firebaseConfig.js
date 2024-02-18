@@ -2,8 +2,10 @@ import { initializeApp } from 'firebase/app';
 import { getAuth } from 'firebase/auth';
 import { getFirestore } from 'firebase/firestore';
 
+const API_KEY = import.meta.env.VITE_FIREBASE_KEY;
+
 const firebaseConfig = {
-  apiKey: 'AIzaSyD-j9jmDAxXqtkoLf1iFqVyhLd5qP11WfI',
+  apiKey: API_KEY,
   authDomain: 'trivia-quiz-bink.firebaseapp.com',
   projectId: 'trivia-quiz-bink',
   storageBucket: 'trivia-quiz-bink.appspot.com',
