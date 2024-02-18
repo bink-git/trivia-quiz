@@ -5,7 +5,13 @@ import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { useAuthState } from 'react-firebase-hooks/auth';
 import { auth, db } from './utils/firebaseConfig';
-import { getDocs, collection, addDoc, orderBy } from 'firebase/firestore';
+import {
+  getDocs,
+  collection,
+  addDoc,
+  orderBy,
+  Timestamp,
+} from 'firebase/firestore';
 
 import Header from './components/Header';
 import Result from './components/Result';
@@ -147,7 +153,7 @@ function Home() {
   };
 
   const onResults = async () => {
-    const date = new Date();
+    const date = Timestamp.fromDate(new Date());
     const newData = {
       date: date.toLocaleString(),
       correctAnswers,
