@@ -161,7 +161,7 @@ function Home() {
       date,
       correctAnswers,
       totalQuestions,
-      userId: user.id,
+      userId: user.uid,
     };
     setResults([...results, newData]);
     await addDoc(resultsCollectionRef, newData);
