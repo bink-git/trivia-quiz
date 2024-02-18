@@ -164,7 +164,10 @@ function Home() {
           totalQuestions,
           date,
         };
+        setResults([...results, newData]);
         await addDoc(collection(db, 'history'), newData);
+        setShowResult(true);
+        setIsStatisic(false);
       } catch (error) {
         console.error('Error logging user statistic:', error);
       }
