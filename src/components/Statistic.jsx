@@ -1,3 +1,4 @@
+import { formatDate } from '../utils/formatDate';
 const Statistic = ({ statistic, results }) => {
   return (
     <div className="statistic">
@@ -14,7 +15,7 @@ const Statistic = ({ statistic, results }) => {
       <ul>
         {results.reverse().map((entry, index) => (
           <li key={index}>
-            <p>Date: {entry.date.toDate().toLocaleString()},</p>
+            <p>Date: {formatDate(entry.date.toDate())},</p>
             <p>
               Correct Answers: {entry.correctAnswers} / {entry.totalQuestions}
             </p>
