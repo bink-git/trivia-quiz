@@ -1,8 +1,10 @@
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
+
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+
 import { useAuthState } from 'react-firebase-hooks/auth';
 import { auth, db } from './utils/firebaseConfig';
 import {
@@ -20,10 +22,10 @@ import Welcome from './components/Welcome';
 import Statistic from './components/Statistic';
 import GameSkeleton from './components/GameSkeleton';
 import Loader from './components/Loader';
-
-import { REQUEST_TOKEN, RESPONSE_CODES, MAIN_URL } from './utils/constants';
 import UserInfo from './components/UserInfo';
 import LoggedIn from './LoggedIn';
+
+import { REQUEST_TOKEN, RESPONSE_CODES, MAIN_URL } from './utils/constants';
 
 function Home() {
   const [data, setData] = useState([]);
@@ -76,7 +78,7 @@ function Home() {
     };
 
     getResults();
-  }, []);
+  }, [resultsCollectionRef]);
 
   const handleLogout = async () => {
     try {
@@ -153,11 +155,13 @@ function Home() {
 
   const onResults = async () => {
     const date = Timestamp.fromDate(new Date());
+    const user = auth.currentUser;
+    console.log(user);
     const newData = {
-      // date: date.toLocaleString(),
       date,
       correctAnswers,
       totalQuestions,
+      userId: user.id,
     };
     setResults([...results, newData]);
     await addDoc(resultsCollectionRef, newData);
