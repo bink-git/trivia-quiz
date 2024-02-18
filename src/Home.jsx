@@ -145,11 +145,14 @@ function Home() {
 
   const onResults = async () => {
     const date = new Date();
-    await addDoc(resultsCollectionRef, {
+    const newData = {
       date: date.toLocaleString(),
       correctAnswers,
       totalQuestions,
-    });
+    };
+    await addDoc(resultsCollectionRef, newData);
+    setShowResult(true);
+    setIsStatisic(false);
   };
 
   const handleFetch = async () => {
