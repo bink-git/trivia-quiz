@@ -152,9 +152,10 @@ function Home() {
   };
 
   const onResults = async () => {
-    const date = new Date();
+    const date = Timestamp.fromDate(new Date());
     const newData = {
-      date: date.toLocaleString(),
+      // date: date.toLocaleString(),
+      date,
       correctAnswers,
       totalQuestions,
     };
