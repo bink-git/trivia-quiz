@@ -205,8 +205,8 @@ function Home() {
     const fetchUserStatistics = async () => {
       const user = auth.currentUser;
       if (user) {
-        const statistics = await getUserStatistics(user.uid);
-        setResults(statistics);
+        const userStatistic = await getUserStatistics(user.uid);
+        setResults(userStatistic);
       }
     };
 
