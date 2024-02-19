@@ -60,28 +60,28 @@ function Home() {
 
   const navigate = useNavigate();
 
-  const resultsCollectionRef = collection(db, 'history');
+  // const resultsCollectionRef = collection(db, 'history');
 
-  useEffect(() => {
-    const getResults = async () => {
-      try {
-        const data = await getDocs(
-          resultsCollectionRef,
-          orderBy('date', 'desc')
-        );
-        const filtredData = data.docs.map((doc) => ({
-          ...doc.data(),
-          id: doc.id,
-        }));
-        setResults(filtredData);
-        console.log(filtredData);
-      } catch (error) {
-        notifyError(error.message);
-      }
-    };
+  // useEffect(() => {
+  //   const getResults = async () => {
+  //     try {
+  //       const data = await getDocs(
+  //         resultsCollectionRef,
+  //         orderBy('date', 'desc')
+  //       );
+  //       const filtredData = data.docs.map((doc) => ({
+  //         ...doc.data(),
+  //         id: doc.id,
+  //       }));
+  //       setResults(filtredData);
+  //       console.log(filtredData);
+  //     } catch (error) {
+  //       notifyError(error.message);
+  //     }
+  //   };
 
-    getResults();
-  }, []);
+  //   getResults();
+  // }, []);
 
   const handleLogout = async () => {
     try {
@@ -155,15 +155,45 @@ function Home() {
     setIsStatisic(false);
   };
 
+  // const getUserStatistics = async (userId) => {
+  //   try {
+  //     const q = query(collection(db, 'history'), where('userId', '==', userId));
+  //     const querySnapshot = await getDocs(q);
+  //     const statistics = [];
+  //     querySnapshot.forEach((doc) => {
+  //       statistics.push(doc.data());
+  //     });
+  //     return statistics;
+  //   } catch (error) {
+  //     notifyError(error.message);
+  //     return [];
+  //   }
+  // };
+
+  // useEffect(() => {
+  //   const fetchUserStatistics = async () => {
+  //     const user = auth.currentUser;
+  //     if (user) {
+  //       const statistics = await getUserStatistics(user.uid);
+  //       setUserStatistics(statistics);
+  //     }
+  //   };
+
+  //   fetchUserStatistics();
+  // }, []);
   const getUserStatistics = async (userId) => {
     try {
-      const q = query(collection(db, 'history'), where('userId', '==', userId));
+      const q = query(
+        collection(db, 'history'),
+        where('userId', '==', userId),
+        orderBy('date', 'desc')
+      );
       const querySnapshot = await getDocs(q);
-      const statistics = [];
-      querySnapshot.forEach((doc) => {
-        statistics.push(doc.data());
-      });
-      return statistics;
+      const filtredData = querySnapshot.docs.map((doc) => ({
+        ...doc.data(),
+        id: doc.id,
+      }));
+      return filtredData;
     } catch (error) {
       notifyError(error.message);
       return [];
@@ -175,7 +205,7 @@ function Home() {
       const user = auth.currentUser;
       if (user) {
         const statistics = await getUserStatistics(user.uid);
-        setUserStatistics(statistics);
+        setResults(statistics);
       }
     };
 

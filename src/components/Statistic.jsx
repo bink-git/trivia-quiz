@@ -4,7 +4,7 @@ const Statistic = ({ results, userStatistics }) => {
   return (
     <div className="statistic">
       <ul>
-        {userStatistics.reverse().map((item, index) => (
+        {results.reverse().map((item, index) => (
           <li key={index}>
             <p>Date: {formatDate(item.date.toDate())},</p>
             <p>
