@@ -69,7 +69,7 @@ function Home() {
         const q = query(
           resultsCollectionRef,
           where('userId', '==', userId),
-          orderBy('date', 'desc')
+          orderBy('date', 'asc')
         );
         const data = await getDocs(q);
         const filtredData = data.docs.map((doc) => ({
