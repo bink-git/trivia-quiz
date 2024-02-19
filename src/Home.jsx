@@ -61,33 +61,29 @@ function Home() {
 
   const resultsCollectionRef = collection(db, 'history');
 
-  useEffect(() => {
-    const getResults = async () => {
-      try {
-        const user = auth.currentUser;
-        if (user) {
-          const userId = user.uid;
-          const q = query(
-            resultsCollectionRef,
-            where('userId', '==', userId),
-            orderBy('date', 'desc')
-          );
-          const data = await getDocs(q);
-          const filtredData = data.docs.map((doc) => ({
-            ...doc.data(),
-            id: doc.id,
-          }));
-          setResults(filtredData);
-          setIsStatisic(true);
-          console.log(filtredData);
-        }
-      } catch (error) {
-        notifyError(error.message);
+  const getResults = async () => {
+    try {
+      const user = auth.currentUser;
+      if (user) {
+        const userId = user.uid;
+        const q = query(
+          resultsCollectionRef,
+          where('userId', '==', userId),
+          orderBy('date', 'desc')
+        );
+        const data = await getDocs(q);
+        const filtredData = data.docs.map((doc) => ({
+          ...doc.data(),
+          id: doc.id,
+        }));
+        setResults(filtredData);
+        setIsStatisic(true);
+        console.log(filtredData);
       }
-    };
-
-    getResults();
-  }, []);
+    } catch (error) {
+      notifyError(error.message);
+    }
+  };
 
   const handleLogout = async () => {
     try {
@@ -134,8 +130,9 @@ function Home() {
     setTotalQuestions(1);
   };
 
-  const onStatistic = () => {
+  const onStatistic = async () => {
     setIsStatisic(!isStatisic);
+    await getResults();
   };
 
   const logUserStatistic = async (correctAnswers, totalQuestions) => {
