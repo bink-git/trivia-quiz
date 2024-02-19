@@ -97,7 +97,6 @@ function Home() {
   const onClickNext = async () => {
     setIsLoading(true);
     await handleFetch();
-
     setIsLoading(false);
   };
 
@@ -169,7 +168,7 @@ function Home() {
         setShowResult(true);
         setIsStatisic(false);
       } catch (error) {
-        console.error('Error logging user statistic:', error);
+        notifyError(error.message);
       }
     }
   };
@@ -315,7 +314,6 @@ function Home() {
         <Statistic
           correctAnswers={correctAnswers}
           totalQuestions={totalQuestions}
-          statistic={statistic}
           results={results}
         />
       )}

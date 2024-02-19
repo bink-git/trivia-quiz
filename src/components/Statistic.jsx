@@ -1,23 +1,13 @@
 import { formatDate } from '../utils/formatDate';
-const Statistic = ({ statistic, results }) => {
+const Statistic = ({ results }) => {
   return (
     <div className="statistic">
       <ul>
-        {statistic.reverse().map((entry, index) => (
+        {results.reverse().map((item, index) => (
           <li key={index}>
-            <p>Date: {entry.date},</p>
+            <p>Date: {formatDate(item.date.toDate())},</p>
             <p>
-              Correct Answers: {entry.correctAnswers} / {entry.totalQuestions}
-            </p>
-          </li>
-        ))}
-      </ul>
-      <ul>
-        {results.reverse().map((entry, index) => (
-          <li key={index}>
-            <p>Date: {formatDate(entry.date.toDate())},</p>
-            <p>
-              Correct Answers: {entry.correctAnswers} / {entry.totalQuestions}
+              Correct Answers: {item.correctAnswers} / {item.totalQuestions}
             </p>
           </li>
         ))}
