@@ -100,6 +100,7 @@ function Home() {
   const onClickNext = async () => {
     setIsLoading(true);
     await handleFetch();
+    await fetchUserStatistics();
     setIsLoading(false);
   };
 
@@ -110,11 +111,12 @@ function Home() {
     setTotalQuestions((total) => total + 1);
   };
 
-  const onStart = () => {
+  const onStart = async () => {
     setStart(false);
     setReset(false);
     setShowResult(false);
     setIsStatisic(false);
+    await fetchUserStatistics();
     fetchData();
   };
 
@@ -217,6 +219,18 @@ function Home() {
 
     fetchUserStatistics();
   }, []);
+
+  const fetchUserStatistics = async () => {
+    const user = auth.currentUser;
+    if (user) {
+      try {
+        const userStatistic = await getUserStatistics(user.uid);
+        setResults(userStatistic);
+      } catch (error) {
+        notifyError(error.message);
+      }
+    }
+  };
 
   const logUserStatistic = async (correctAnswers, totalQuestions) => {
     const user = auth.currentUser;
