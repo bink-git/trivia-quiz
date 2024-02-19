@@ -208,18 +208,6 @@ function Home() {
     }
   };
 
-  useEffect(() => {
-    const fetchUserStatistics = async () => {
-      const user = auth.currentUser;
-      if (user) {
-        const userStatistic = await getUserStatistics(user.uid);
-        setResults(userStatistic);
-      }
-    };
-
-    fetchUserStatistics();
-  }, []);
-
   const fetchUserStatistics = async () => {
     const user = auth.currentUser;
     if (user) {
@@ -231,6 +219,18 @@ function Home() {
       }
     }
   };
+
+  // useEffect(() => {
+  //   const fetchUserStatistics = async () => {
+  //     const user = auth.currentUser;
+  //     if (user) {
+  //       const userStatistic = await getUserStatistics(user.uid);
+  //       setResults(userStatistic);
+  //     }
+  //   };
+
+  //   fetchUserStatistics();
+  // }, []);
 
   const logUserStatistic = async (correctAnswers, totalQuestions) => {
     const user = auth.currentUser;
