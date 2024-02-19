@@ -188,13 +188,18 @@ function Home() {
         where('userId', '==', userId),
         orderBy('date', 'desc')
       );
+      const statistics = [];
       const querySnapshot = await getDocs(q);
-      const filtredData = querySnapshot.docs.map((doc) => ({
-        ...doc.data(),
-        id: doc.id,
-      }));
-      console.log(filtredData);
-      return filtredData;
+      querySnapshot.forEach((doc) => {
+        statistics.push(doc.data());
+      });
+      return statistics;
+      // const filtredData = querySnapshot.docs.map((doc) => ({
+      //   ...doc.data(),
+      //   id: doc.id,
+      // }));
+      // console.log(filtredData);
+      // return filtredData;
     } catch (error) {
       notifyError(error.message);
       return [];
