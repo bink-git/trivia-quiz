@@ -157,10 +157,7 @@ function Home() {
 
   const getUserStatistics = async (userId) => {
     try {
-      const q = query(
-        collection(db, 'userStatistics'),
-        where('userId', '==', userId)
-      );
+      const q = query(collection(db, 'history'), where('userId', '==', userId));
       const querySnapshot = await getDocs(q);
       const statistics = [];
       querySnapshot.forEach((doc) => {
@@ -168,7 +165,7 @@ function Home() {
       });
       return statistics;
     } catch (error) {
-      console.error('Error getting user statistics:', error);
+      notifyError(error.message);
       return [];
     }
   };
