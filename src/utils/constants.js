@@ -5,6 +5,10 @@ export const API_URL = `${MAIN_URL}?amount=1&category=9&difficulty=easy&type=mul
 export const REQUEST_TOKEN =
   'https://opentdb.com/api_token.php?command=request';
 
+export const TEST_URL = 'https://trivia-quiz-develop.vercel.app/';
+export const SUCCESS_MESAGE =
+  'We have sent you an email with a link to sign in';
+
 export const RESPONSE_CODES = [
   { code: 0, message: 'Success' },
   { code: 1, message: 'No Results ' },
