@@ -13,6 +13,8 @@ import {
   addDoc,
   orderBy,
   Timestamp,
+  query,
+  where,
 } from 'firebase/firestore';
 
 import Header from './components/Header';
@@ -41,6 +43,7 @@ function Home() {
   const [totalQuestions, setTotalQuestions] = useState(0);
   const [difficulty, setDifficulty] = useState('easy');
   const [results, setResults] = useState([]);
+  const [userStatistics, setUserStatistics] = useState([]);
 
   const API_URL = `${MAIN_URL}?amount=1&category=9&difficulty=${difficulty}&type=multiple`;
 
@@ -151,6 +154,36 @@ function Home() {
     setShowResult(true);
     setIsStatisic(false);
   };
+
+  const getUserStatistics = async (userId) => {
+    try {
+      const q = query(
+        collection(db, 'userStatistics'),
+        where('userId', '==', userId)
+      );
+      const querySnapshot = await getDocs(q);
+      const statistics = [];
+      querySnapshot.forEach((doc) => {
+        statistics.push(doc.data());
+      });
+      return statistics;
+    } catch (error) {
+      console.error('Error getting user statistics:', error);
+      return [];
+    }
+  };
+
+  useEffect(() => {
+    const fetchUserStatistics = async () => {
+      const user = auth.currentUser;
+      if (user) {
+        const statistics = await getUserStatistics(user.uid);
+        setUserStatistics(statistics);
+      }
+    };
+
+    fetchUserStatistics();
+  }, []);
 
   const logUserStatistic = async (correctAnswers, totalQuestions) => {
     const user = auth.currentUser;
@@ -315,6 +348,7 @@ function Home() {
           correctAnswers={correctAnswers}
           totalQuestions={totalQuestions}
           results={results}
+          userStatistics={userStatistics}
         />
       )}
     </div>

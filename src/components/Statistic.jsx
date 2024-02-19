@@ -1,9 +1,9 @@
 import { formatDate } from '../utils/formatDate';
-const Statistic = ({ results }) => {
+const Statistic = ({ results, userStatistics }) => {
   return (
     <div className="statistic">
       <ul>
-        {results.reverse().map((item, index) => (
+        {userStatistics.reverse().map((item, index) => (
           <li key={index}>
             <p>Date: {formatDate(item.date.toDate())},</p>
             <p>
