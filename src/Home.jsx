@@ -77,8 +77,6 @@ function Home() {
           id: doc.id,
         }));
         setResults(filtredData);
-        setIsStatisic(true);
-        console.log(filtredData);
       }
     } catch (error) {
       notifyError(error.message);
