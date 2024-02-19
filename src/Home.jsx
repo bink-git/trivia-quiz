@@ -38,7 +38,6 @@ function Home() {
   const [showResult, setShowResult] = useState(false);
   const [token, setToken] = useState('');
   const [isStatisic, setIsStatisic] = useState(false);
-  const [statistic, setStatistic] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const [totalQuestions, setTotalQuestions] = useState(0);
   const [difficulty, setDifficulty] = useState('easy');
