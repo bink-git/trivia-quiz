@@ -43,7 +43,6 @@ function Home() {
   const [totalQuestions, setTotalQuestions] = useState(0);
   const [difficulty, setDifficulty] = useState('easy');
   const [results, setResults] = useState([]);
-  const [userStatistics, setUserStatistics] = useState([]);
 
   const API_URL = `${MAIN_URL}?amount=1&category=9&difficulty=${difficulty}&type=multiple`;
 
@@ -60,28 +59,34 @@ function Home() {
 
   const navigate = useNavigate();
 
-  // const resultsCollectionRef = collection(db, 'history');
+  const resultsCollectionRef = collection(db, 'history');
 
-  // useEffect(() => {
-  //   const getResults = async () => {
-  //     try {
-  //       const data = await getDocs(
-  //         resultsCollectionRef,
-  //         orderBy('date', 'desc')
-  //       );
-  //       const filtredData = data.docs.map((doc) => ({
-  //         ...doc.data(),
-  //         id: doc.id,
-  //       }));
-  //       setResults(filtredData);
-  //       console.log(filtredData);
-  //     } catch (error) {
-  //       notifyError(error.message);
-  //     }
-  //   };
+  useEffect(() => {
+    const getResults = async () => {
+      try {
+        const user = auth.currentUser;
+        if (user) {
+          const userId = user.uid;
+          const q = query(
+            resultsCollectionRef,
+            where('userId', '==', userId),
+            orderBy('date', 'desc')
+          );
+          const data = await getDocs(q);
+          const filtredData = data.docs.map((doc) => ({
+            ...doc.data(),
+            id: doc.id,
+          }));
+          setResults(filtredData);
+          console.log(filtredData);
+        }
+      } catch (error) {
+        notifyError(error.message);
+      }
+    };
 
-  //   getResults();
-  // }, []);
+    getResults();
+  }, []);
 
   const handleLogout = async () => {
     try {
@@ -100,7 +105,6 @@ function Home() {
   const onClickNext = async () => {
     setIsLoading(true);
     await handleFetch();
-    await fetchUserStatistics();
     setIsLoading(false);
   };
 
@@ -116,7 +120,6 @@ function Home() {
     setReset(false);
     setShowResult(false);
     setIsStatisic(false);
-    await fetchUserStatistics();
     fetchData();
   };
 
@@ -133,104 +136,6 @@ function Home() {
   const onStatistic = () => {
     setIsStatisic(!isStatisic);
   };
-
-  useEffect(() => {
-    const storedStatistic = localStorage.getItem('quizStatistic');
-    if (storedStatistic) {
-      setStatistic(JSON.parse(storedStatistic));
-    }
-  }, []);
-
-  const handleStatistic = () => {
-    const date = new Date();
-    const newData = {
-      date: date.toLocaleString(),
-      correctAnswers,
-      totalQuestions,
-    };
-    setStatistic([...statistic, newData]);
-    localStorage.setItem(
-      'quizStatistic',
-      JSON.stringify([...statistic, newData])
-    );
-    setShowResult(true);
-    setIsStatisic(false);
-  };
-
-  // const getUserStatistics = async (userId) => {
-  //   try {
-  //     const q = query(collection(db, 'history'), where('userId', '==', userId));
-  //     const querySnapshot = await getDocs(q);
-  //     const statistics = [];
-  //     querySnapshot.forEach((doc) => {
-  //       statistics.push(doc.data());
-  //     });
-  //     return statistics;
-  //   } catch (error) {
-  //     notifyError(error.message);
-  //     return [];
-  //   }
-  // };
-
-  // useEffect(() => {
-  //   const fetchUserStatistics = async () => {
-  //     const user = auth.currentUser;
-  //     if (user) {
-  //       const statistics = await getUserStatistics(user.uid);
-  //       setUserStatistics(statistics);
-  //     }
-  //   };
-
-  //   fetchUserStatistics();
-  // }, []);
-  const getUserStatistics = async (userId) => {
-    try {
-      const q = query(
-        collection(db, 'history'),
-        where('userId', '==', userId),
-        orderBy('date', 'desc')
-      );
-      const statistics = [];
-      const querySnapshot = await getDocs(q);
-      querySnapshot.forEach((doc) => {
-        statistics.push(doc.data());
-      });
-      return statistics;
-      // const filtredData = querySnapshot.docs.map((doc) => ({
-      //   ...doc.data(),
-      //   id: doc.id,
-      // }));
-      // console.log(filtredData);
-      // return filtredData;
-    } catch (error) {
-      notifyError(error.message);
-      return [];
-    }
-  };
-
-  const fetchUserStatistics = async () => {
-    const user = auth.currentUser;
-    if (user) {
-      try {
-        const userStatistic = await getUserStatistics(user.uid);
-        setResults(userStatistic);
-      } catch (error) {
-        notifyError(error.message);
-      }
-    }
-  };
-
-  // useEffect(() => {
-  //   const fetchUserStatistics = async () => {
-  //     const user = auth.currentUser;
-  //     if (user) {
-  //       const userStatistic = await getUserStatistics(user.uid);
-  //       setResults(userStatistic);
-  //     }
-  //   };
-
-  //   fetchUserStatistics();
-  // }, []);
 
   const logUserStatistic = async (correctAnswers, totalQuestions) => {
     const user = auth.currentUser;
@@ -256,22 +161,6 @@ function Home() {
   const onResults = async () => {
     logUserStatistic(correctAnswers, totalQuestions);
   };
-
-  // const onResults = async () => {
-  //   const date = Timestamp.fromDate(new Date());
-  //   const user = auth.currentUser;
-  //   console.log(user);
-  //   const newData = {
-  //     date,
-  //     correctAnswers,
-  //     totalQuestions,
-  //     userId: user.uid,
-  //   };
-  //   setResults([...results, newData]);
-  //   await addDoc(resultsCollectionRef, newData);
-  //   setShowResult(true);
-  //   setIsStatisic(false);
-  // };
 
   const handleFetch = async () => {
     try {
@@ -395,7 +284,6 @@ function Home() {
           correctAnswers={correctAnswers}
           totalQuestions={totalQuestions}
           results={results}
-          userStatistics={userStatistics}
         />
       )}
     </div>
