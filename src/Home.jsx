@@ -193,6 +193,7 @@ function Home() {
         ...doc.data(),
         id: doc.id,
       }));
+      console.log(filtredData);
       return filtredData;
     } catch (error) {
       notifyError(error.message);
