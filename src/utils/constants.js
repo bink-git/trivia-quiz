@@ -1,9 +1,13 @@
 export const MAIN_URL = 'https://opentdb.com/api.php';
+export const TEST_URL = 'https://trivia-quiz-firebase-history.vercel.app/';
 
 export const API_URL = `${MAIN_URL}?amount=1&category=9&difficulty=easy&type=multiple`;
 
 export const REQUEST_TOKEN =
   'https://opentdb.com/api_token.php?command=request';
+
+export const SUCCESS_MESSAGE =
+  'We have sent you an email with a link to sign in';
 
 export const RESPONSE_CODES = [
   { code: 0, message: 'Success' },
