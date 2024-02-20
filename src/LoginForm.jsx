@@ -1,5 +1,5 @@
 import { sendSignInLinkToEmail, signInWithPopup } from 'firebase/auth';
-import { auth, googleProvider } from './utils/firebaseConfig';
+import { auth, githubProvider, googleProvider } from './utils/firebaseConfig';
 import Header from './components/Header';
 import { ToastContainer, toast } from 'react-toastify';
 import { SUCCESS_MESSAGE, TEST_URL } from './utils/constants';
@@ -30,6 +30,14 @@ const LoginForm = ({ userEmail, setUserEmail, isLoading, setIsLoading }) => {
   const signInWithGoogle = async () => {
     try {
       await signInWithPopup(auth, googleProvider);
+    } catch (error) {
+      notifyError(error.message);
+    }
+  };
+
+  const signInWithGithub = async () => {
+    try {
+      await signInWithPopup(auth, githubProvider);
     } catch (error) {
       notifyError(error.message);
     }
@@ -70,7 +78,7 @@ const LoginForm = ({ userEmail, setUserEmail, isLoading, setIsLoading }) => {
           <button className="auth-btn" onClick={signInWithGoogle}>
             <FcGoogle size={30} />
           </button>
-          <button className="auth-btn">
+          <button className="auth-btn" onClick={signInWithGithub}>
             <FaGithub size={30} />
           </button>
         </div>
