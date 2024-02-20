@@ -109,7 +109,7 @@ function Home() {
     setTotalQuestions((total) => total + 1);
   };
 
-  const onStart = async () => {
+  const onStart = () => {
     setStart(false);
     setReset(false);
     setShowResult(false);
