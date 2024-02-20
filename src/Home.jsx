@@ -85,6 +85,7 @@ function Home() {
   const handleLogout = async () => {
     try {
       await auth.signOut();
+      setIsStatisic(false);
       notifySuccess();
       navigate('/');
     } catch (err) {
