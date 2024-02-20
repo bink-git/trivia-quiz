@@ -124,7 +124,7 @@ function Home() {
     setStart(true);
     setShowResult(false);
     setIsStatisic(false);
-    setTotalQuestions(1);
+    setTotalQuestions(0);
   };
 
   const onStatistic = async () => {

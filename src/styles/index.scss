@@ -267,3 +267,21 @@ label {
     text-decoration: underline;
   }
 }
+
+.auth-links {
+  display: flex;
+  gap: 20px;
+  margin-top: 20px;
+}
+.auth-btn {
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  outline: none;
+  border: none;
+  cursor: pointer;
+  transition: all 0.2s ease-in-out;
+  &:hover {
+    scale: 1.1;
+  }
+}
