@@ -1,5 +1,5 @@
 import { formatDate } from '../utils/formatDate';
-const Statistic = ({ results, userStatistics }) => {
+const Statistic = ({ results }) => {
   console.log(results, 'results');
   return (
     <div className="statistic">
