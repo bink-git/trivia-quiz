@@ -56,6 +56,8 @@ function Home() {
 
   const [user, loading, error] = useAuthState(auth);
 
+  console.log(user, loading, error);
+
   const navigate = useNavigate();
 
   const resultsCollectionRef = collection(db, 'history');
@@ -85,9 +87,9 @@ function Home() {
   const handleLogout = async () => {
     try {
       await auth.signOut();
-      setIsStatisic(false);
+      navigate('/login');
+      onReset();
       notifySuccess();
-      navigate('/');
     } catch (err) {
       notifyError(err.message);
     }
@@ -199,6 +201,7 @@ function Home() {
 
   return (
     <div className="container">
+      {!user && <LoggedIn />}
       {user ? (
         <>
           <Header />
@@ -222,7 +225,7 @@ function Home() {
               <Welcome onStart={onStart} onDifficulty={handleDifficulty} />
             )}
 
-            {!start && quest && !showResult && (
+            {!start && quest && !showResult && user && (
               <>
                 <UserInfo user={user} handleLogout={handleLogout} />
                 <p className="correct">
