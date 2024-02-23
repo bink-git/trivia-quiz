@@ -144,11 +144,6 @@ function Home() {
       setCorrectAnswers(correctAnswers + 1);
     }
     setTotalQuestions((total) => total + 1);
-    const timeout = setTimeout(() => {
-      setIsLoading(true);
-    }, 500);
-    clearTimeout(timeout);
-    setIsLoading(false);
   };
 
   const onStart = () => {
