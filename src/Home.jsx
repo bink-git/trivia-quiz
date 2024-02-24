@@ -78,7 +78,6 @@ function Home() {
       const res = await axios.get(`${API_URL}&token=${token}`);
       setData(res.data.results);
       setIsLoading(false);
-      // await callApiWithRetry(API_URL);
     } catch (error) {
       notifyError(error.message);
     } finally {
