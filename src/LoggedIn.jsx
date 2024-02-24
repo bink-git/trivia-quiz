@@ -24,9 +24,9 @@ const LoggedIn = () => {
       }
       if (isSignInWithEmailLink(auth, window.location.href)) {
         let emailFromStorage = localStorage.getItem('email');
-        if (!emailFromStorage) {
-          emailFromStorage = window.prompt('Please provide your email');
-        }
+        // if (!emailFromStorage) {
+        //   emailFromStorage = window.prompt('Please provide your email');
+        // }
 
         setIsLoading(true);
 

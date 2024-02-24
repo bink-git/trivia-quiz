@@ -42,6 +42,9 @@ function Home() {
   const [totalQuestions, setTotalQuestions] = useState(0);
   const [difficulty, setDifficulty] = useState('easy');
   const [results, setResults] = useState([]);
+  const [answered, setAnswered] = useState(false);
+  const [disableNext, setDisableNext] = useState(false);
+
   const [user, loading, error] = useAuthState(auth);
 
   const API_URL = `${MAIN_URL}?amount=1&category=9&difficulty=${difficulty}&type=multiple`;
@@ -78,21 +81,34 @@ function Home() {
       const res = await axios.get(`${API_URL}&token=${token}`);
       setData(res.data.results);
       setIsLoading(false);
+      // await callApiWithRetry(API_URL);
     } catch (error) {
       notifyError(error.message);
+    } finally {
       setIsLoading(false);
     }
   };
 
+  // const callApiWithRetry = async (url, retries = 1, delay = 300) => {
+  //   try {
+  //     const res = await axios.get(`${url}&token=${token}`);
+  //     setData(res.data.results);
+  //   } catch (error) {
+  //     if (error.response.status === 429 && retries > 0) {
+  //       await new Promise((resolve) => setTimeout(resolve, delay));
+  //       await callApiWithRetry(url, retries - 1, delay * 2);
+  //     } else {
+  //       throw error;
+  //     }
+  //   }
+  // };
+
   const handleFetch = async () => {
     try {
-      setIsLoading(true);
       const res = await axios.get(`${API_URL}&token=${token}`);
       setData(res.data.results);
-      setIsLoading(false);
     } catch (error) {
       notifyError(error.message);
-      setIsLoading(false);
     }
   };
 
@@ -139,12 +155,37 @@ function Home() {
     setIsLoading(false);
   };
 
+  // const onClickNext = async () => {
+  //   if (!answered || disableNext) return; // Disable the button if the question hasn't been answered or if it's already disabled
+  //   setIsLoading(true);
+  //   await handleFetch();
+  //   setIsLoading(false);
+  //   setDisableNext(true); // Disable the button
+  //   // setTimeout(() => {
+  //   //   setDisableNext(false); // Enable the button after one second
+  //   // }, 1000);
+  // };
+
   const onClickAnswer = (answer) => {
     if (data[step].correct_answer === answer) {
       setCorrectAnswers(correctAnswers + 1);
     }
     setTotalQuestions((total) => total + 1);
   };
+
+  // const onClickAnswer = (answer) => {
+  //   if (data[step].correct_answer === answer) {
+  //     setCorrectAnswers(correctAnswers + 1);
+  //   }
+  //   setTotalQuestions((total) => total + 1);
+  //   setAnswered(true); // Set answered to true when the question is answered
+
+  //   // Disable the button for one second after answering
+  //   setDisableNext(true);
+  //   setTimeout(() => {
+  //     setDisableNext(false);
+  //   }, 1000);
+  // };
 
   const onStart = () => {
     setStart(false);
@@ -240,13 +281,10 @@ function Home() {
                 )}
 
                 <div className="buttons">
-                  <button
-                    className="next btn"
-                    onClick={onClickNext}
-                    disabled={isLoading}
-                  >
+                  <button className="next btn" onClick={onClickNext}>
                     Next
                   </button>
+
                   <button className="btn" onClick={() => onResults()}>
                     Finish
                   </button>
