@@ -43,22 +43,56 @@ function Home() {
   const [difficulty, setDifficulty] = useState('easy');
   const [results, setResults] = useState([]);
 
+  const [user, loading, error] = useAuthState(auth);
+
   const API_URL = `${MAIN_URL}?amount=1&category=9&difficulty=${difficulty}&type=multiple`;
 
   const { code } = RESPONSE_CODES;
 
-  let resCode;
-  let resMessage;
-
-  const notifyFetch = () => toast.error('Error fetching data');
   const notifySuccess = () => toast.success('Successfully logged out');
   const notifyError = (message) => toast.error(message);
-
-  const [user, loading, error] = useAuthState(auth);
 
   const navigate = useNavigate();
 
   const resultsCollectionRef = collection(db, 'history');
+
+  useEffect(() => {
+    if (user) fetchData(); // Fetch data only when user is available
+  }, [user]);
+
+  const fetchData = async () => {
+    try {
+      setIsLoading(true);
+      const userToken = await axios.get(REQUEST_TOKEN);
+      const { token, response_code, response_message } = userToken.data;
+
+      if (response_code !== 0) {
+        notifyError(response_message);
+        setToken('');
+        setIsLoading(false);
+        return;
+      }
+
+      setToken(token);
+
+      const res = await axios.get(`${API_URL}&token=${token}`);
+      setData(res.data.results);
+      setIsLoading(false);
+    } catch (error) {
+      notifyError(error.message);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  const handleFetch = async () => {
+    try {
+      const res = await axios.get(`${API_URL}&token=${token}`);
+      setData(res.data.results);
+    } catch (error) {
+      notifyError(error.message);
+    }
+  };
 
   const getResults = async () => {
     try {
@@ -85,8 +119,9 @@ function Home() {
   const handleLogout = async () => {
     try {
       await auth.signOut();
+      navigate('/login');
+      onReset();
       notifySuccess();
-      navigate('/');
     } catch (err) {
       notifyError(err.message);
     }
@@ -124,7 +159,7 @@ function Home() {
     setStart(true);
     setShowResult(false);
     setIsStatisic(false);
-    setTotalQuestions(1);
+    setTotalQuestions(0);
   };
 
   const onStatistic = async () => {
@@ -157,51 +192,15 @@ function Home() {
     logUserStatistic(correctAnswers, totalQuestions);
   };
 
-  const handleFetch = async () => {
-    try {
-      setIsLoading(true);
-      const res = await axios.get(`${API_URL}&token=${token}`);
-      setData(res.data.results);
-    } catch (error) {
-      if (resCode === code) {
-        notifyError(resMessage);
-        setIsLoading(false);
-      }
-    }
-  };
-
-  const fetchData = async () => {
-    try {
-      const userToken = await axios.get(REQUEST_TOKEN);
-      const { token, response_code, response_message } = userToken.data;
-
-      resCode = response_code;
-      resMessage = response_message;
-
-      setToken(token);
-
-      const res = await axios.get(`${API_URL}&token=${token}`);
-      setData(res.data.results);
-    } catch (error) {
-      if (resCode === code) {
-        notifyError(resMessage);
-        setToken('');
-      } else {
-        notifyFetch();
-      }
-    } finally {
-      setIsLoading(false);
-    }
-  };
-
   const quest = data && data[step];
 
   return (
     <div className="container">
+      {!user && <LoggedIn />}
+
       {user ? (
         <>
           <Header />
-
           <div className="App">
             <ToastContainer
               position="top-center"
@@ -221,7 +220,7 @@ function Home() {
               <Welcome onStart={onStart} onDifficulty={handleDifficulty} />
             )}
 
-            {!start && quest && !showResult && (
+            {!start && quest && !showResult && user && (
               <>
                 <UserInfo user={user} handleLogout={handleLogout} />
                 <p className="correct">
@@ -242,6 +241,7 @@ function Home() {
                   <button className="next btn" onClick={onClickNext}>
                     Next
                   </button>
+
                   <button className="btn" onClick={() => onResults()}>
                     Finish
                   </button>
@@ -265,12 +265,10 @@ function Home() {
       )}
 
       {!start && !showResult && (
-        <button className="statistic-btn" onClick={() => onStatistic()}>
-          Show statistic
+        <button className="statistic-btn" onClick={onStatistic}>
+          {isStatisic ? 'Hide statistic' : 'Show statistic'}
         </button>
       )}
-
-      {loading && <Loader />}
 
       {error && notifyError(error.message)}
 

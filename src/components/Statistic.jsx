@@ -1,8 +1,8 @@
 import { formatDate } from '../utils/formatDate';
 const Statistic = ({ results }) => {
-  console.log(results, 'results');
   return (
     <div className="statistic">
+      {!results.length && <p>You don&apos;t have a statistic yet</p>}
       <ul>
         {results.reverse().map((item, index) => (
           <li key={index}>
