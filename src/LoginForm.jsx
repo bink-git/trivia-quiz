@@ -2,9 +2,12 @@ import { sendSignInLinkToEmail, signInWithPopup } from 'firebase/auth';
 import { auth, githubProvider, googleProvider } from './utils/firebaseConfig';
 import Header from './components/Header';
 import { ToastContainer, toast } from 'react-toastify';
-import { SUCCESS_MESSAGE, TEST_URL } from './utils/constants';
+
 import { FcGoogle } from 'react-icons/fc';
 import { FaGithub } from 'react-icons/fa';
+
+import { SUCCESS_MESAGE, TEST_URL } from './utils/constants';
+
 
 const LoginForm = ({ userEmail, setUserEmail, isLoading, setIsLoading }) => {
   const notifyError = (message) => toast.error(message);
@@ -19,7 +22,10 @@ const LoginForm = ({ userEmail, setUserEmail, isLoading, setIsLoading }) => {
         handleCodeInApp: true,
       });
       localStorage.setItem('email', userEmail);
-      notifyInfo(SUCCESS_MESSAGE);
+
+     
+      notifyInfo(SUCCESS_MESAGE);
+
     } catch (error) {
       notifyError(error.message);
     } finally {
