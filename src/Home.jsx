@@ -1,10 +1,21 @@
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
+
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+
 import { useAuthState } from 'react-firebase-hooks/auth';
-import { auth } from './utils/firebaseConfig';
+import { auth, db } from './utils/firebaseConfig';
+import {
+  getDocs,
+  collection,
+  addDoc,
+  orderBy,
+  Timestamp,
+  query,
+  where,
+} from 'firebase/firestore';
 
 import Header from './components/Header';
 import Result from './components/Result';
@@ -13,10 +24,10 @@ import Welcome from './components/Welcome';
 import Statistic from './components/Statistic';
 import GameSkeleton from './components/GameSkeleton';
 import Loader from './components/Loader';
-
-import { REQUEST_TOKEN, RESPONSE_CODES, MAIN_URL } from './utils/constants';
 import UserInfo from './components/UserInfo';
 import LoggedIn from './LoggedIn';
+
+import { REQUEST_TOKEN, RESPONSE_CODES, MAIN_URL } from './utils/constants';
 
 function Home() {
   const [data, setData] = useState([]);
@@ -27,32 +38,90 @@ function Home() {
   const [showResult, setShowResult] = useState(false);
   const [token, setToken] = useState('');
   const [isStatisic, setIsStatisic] = useState(false);
-  const [statistic, setStatistic] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const [totalQuestions, setTotalQuestions] = useState(0);
   const [difficulty, setDifficulty] = useState('easy');
+  const [results, setResults] = useState([]);
+
+  const [user, loading, error] = useAuthState(auth);
 
   const API_URL = `${MAIN_URL}?amount=1&category=9&difficulty=${difficulty}&type=multiple`;
 
   const { code } = RESPONSE_CODES;
 
-  let resCode;
-  let resMessage;
-
-  const notifyFetch = () => toast.error('Error fetching data');
-  const notifyToken = (message) => toast.error(message);
   const notifySuccess = () => toast.success('Successfully logged out');
   const notifyError = (message) => toast.error(message);
 
-  const [user, loading, error] = useAuthState(auth);
-
   const navigate = useNavigate();
+
+  const resultsCollectionRef = collection(db, 'history');
+
+  useEffect(() => {
+    if (user) fetchData(); // Fetch data only when user is available
+  }, [user]);
+
+  const fetchData = async () => {
+    try {
+      setIsLoading(true);
+      const userToken = await axios.get(REQUEST_TOKEN);
+      const { token, response_code, response_message } = userToken.data;
+
+      if (response_code !== 0) {
+        notifyError(response_message);
+        setToken('');
+        setIsLoading(false);
+        return;
+      }
+
+      setToken(token);
+
+      const res = await axios.get(`${API_URL}&token=${token}`);
+      setData(res.data.results);
+      setIsLoading(false);
+    } catch (error) {
+      notifyError(error.message);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  const handleFetch = async () => {
+    try {
+      const res = await axios.get(`${API_URL}&token=${token}`);
+      setData(res.data.results);
+    } catch (error) {
+      notifyError(error.message);
+    }
+  };
+
+  const getResults = async () => {
+    try {
+      const user = auth.currentUser;
+      if (user) {
+        const userId = user.uid;
+        const q = query(
+          resultsCollectionRef,
+          where('userId', '==', userId),
+          orderBy('date', 'asc')
+        );
+        const data = await getDocs(q);
+        const filtredData = data.docs.map((doc) => ({
+          ...doc.data(),
+          id: doc.id,
+        }));
+        setResults(filtredData);
+      }
+    } catch (error) {
+      notifyError(error.message);
+    }
+  };
 
   const handleLogout = async () => {
     try {
       await auth.signOut();
+      navigate('/login');
+      onReset();
       notifySuccess();
-      navigate('/');
     } catch (err) {
       notifyError(err.message);
     }
@@ -65,7 +134,6 @@ function Home() {
   const onClickNext = async () => {
     setIsLoading(true);
     await handleFetch();
-
     setIsLoading(false);
   };
 
@@ -91,81 +159,48 @@ function Home() {
     setStart(true);
     setShowResult(false);
     setIsStatisic(false);
-    setTotalQuestions(1);
+    setTotalQuestions(0);
   };
 
-  const onStatistic = () => {
+  const onStatistic = async () => {
     setIsStatisic(!isStatisic);
+    await getResults();
   };
 
-  useEffect(() => {
-    const storedStatistic = localStorage.getItem('quizStatistic');
-    if (storedStatistic) {
-      setStatistic(JSON.parse(storedStatistic));
-    }
-  }, []);
-
-  const handleStatistic = () => {
-    const date = new Date();
-    const newData = {
-      date: date.toLocaleString(),
-      correctAnswers,
-      totalQuestions,
-    };
-    setStatistic([...statistic, newData]);
-    localStorage.setItem(
-      'quizStatistic',
-      JSON.stringify([...statistic, newData])
-    );
-    setShowResult(true);
-    setIsStatisic(false);
-  };
-
-  const handleFetch = async () => {
-    try {
-      setIsLoading(true);
-      const res = await axios.get(`${API_URL}&token=${token}`);
-      setData(res.data.results);
-    } catch (error) {
-      if (resCode === code) {
-        notifyToken(resMessage);
-        setIsLoading(false);
+  const logUserStatistic = async (correctAnswers, totalQuestions) => {
+    const user = auth.currentUser;
+    if (user) {
+      try {
+        const date = Timestamp.fromDate(new Date());
+        const newData = {
+          userId: user.uid,
+          correctAnswers,
+          totalQuestions,
+          date,
+        };
+        setResults([...results, newData]);
+        await addDoc(collection(db, 'history'), newData);
+        setShowResult(true);
+        setIsStatisic(false);
+      } catch (error) {
+        notifyError(error.message);
       }
     }
   };
 
-  const fetchData = async () => {
-    try {
-      const userToken = await axios.get(REQUEST_TOKEN);
-      const { token, response_code, response_message } = userToken.data;
-
-      resCode = response_code;
-      resMessage = response_message;
-
-      setToken(token);
-
-      const res = await axios.get(`${API_URL}&token=${token}`);
-      setData(res.data.results);
-    } catch (error) {
-      if (resCode === code) {
-        notifyToken(resMessage);
-        setToken('');
-      } else {
-        notifyFetch();
-      }
-    } finally {
-      setIsLoading(false);
-    }
+  const onResults = async () => {
+    logUserStatistic(correctAnswers, totalQuestions);
   };
 
   const quest = data && data[step];
 
   return (
     <div className="container">
+      {!user && <LoggedIn />}
+
       {user ? (
         <>
           <Header />
-
           <div className="App">
             <ToastContainer
               position="top-center"
@@ -185,7 +220,7 @@ function Home() {
               <Welcome onStart={onStart} onDifficulty={handleDifficulty} />
             )}
 
-            {!start && quest && !showResult && (
+            {!start && quest && !showResult && user && (
               <>
                 <UserInfo user={user} handleLogout={handleLogout} />
                 <p className="correct">
@@ -206,7 +241,8 @@ function Home() {
                   <button className="next btn" onClick={onClickNext}>
                     Next
                   </button>
-                  <button className="btn" onClick={() => handleStatistic()}>
+
+                  <button className="btn" onClick={() => onResults()}>
                     Finish
                   </button>
                 </div>
@@ -229,12 +265,10 @@ function Home() {
       )}
 
       {!start && !showResult && (
-        <button className="statistic-btn" onClick={() => onStatistic()}>
-          Show statistic
+        <button className="statistic-btn" onClick={onStatistic}>
+          {isStatisic ? 'Hide statistic' : 'Show statistic'}
         </button>
       )}
-
-      {loading && <Loader />}
 
       {error && notifyError(error.message)}
 
@@ -242,7 +276,7 @@ function Home() {
         <Statistic
           correctAnswers={correctAnswers}
           totalQuestions={totalQuestions}
-          statistic={statistic}
+          results={results}
         />
       )}
     </div>

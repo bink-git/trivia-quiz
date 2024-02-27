@@ -1,8 +1,13 @@
-import { sendSignInLinkToEmail } from 'firebase/auth';
-import { auth } from './utils/firebaseConfig';
+import { sendSignInLinkToEmail, signInWithPopup } from 'firebase/auth';
+import { auth, githubProvider, googleProvider } from './utils/firebaseConfig';
 import Header from './components/Header';
 import { ToastContainer, toast } from 'react-toastify';
+
+import { FcGoogle } from 'react-icons/fc';
+import { FaGithub } from 'react-icons/fa';
+
 import { SUCCESS_MESAGE, TEST_URL } from './utils/constants';
+
 
 const LoginForm = ({ userEmail, setUserEmail, isLoading, setIsLoading }) => {
   const notifyError = (message) => toast.error(message);
@@ -17,11 +22,30 @@ const LoginForm = ({ userEmail, setUserEmail, isLoading, setIsLoading }) => {
         handleCodeInApp: true,
       });
       localStorage.setItem('email', userEmail);
+
+     
       notifyInfo(SUCCESS_MESAGE);
+
     } catch (error) {
       notifyError(error.message);
     } finally {
       setIsLoading(false);
+    }
+  };
+
+  const signInWithGoogle = async () => {
+    try {
+      await signInWithPopup(auth, googleProvider);
+    } catch (error) {
+      notifyError(error.message);
+    }
+  };
+
+  const signInWithGithub = async () => {
+    try {
+      await signInWithPopup(auth, githubProvider);
+    } catch (error) {
+      notifyError(error.message);
     }
   };
 
@@ -56,6 +80,14 @@ const LoginForm = ({ userEmail, setUserEmail, isLoading, setIsLoading }) => {
             {isLoading ? 'Logging you in' : 'Login'}
           </button>
         </form>
+        <div className="auth-links">
+          <button className="auth-btn" onClick={signInWithGoogle}>
+            <FcGoogle size={30} />
+          </button>
+          <button className="auth-btn" onClick={signInWithGithub}>
+            <FaGithub size={30} />
+          </button>
+        </div>
       </div>
     </>
   );

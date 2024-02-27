@@ -1,12 +1,14 @@
-const Statistic = ({ statistic }) => {
+import { formatDate } from '../utils/formatDate';
+const Statistic = ({ results }) => {
   return (
     <div className="statistic">
+      {!results.length && <p>You don&apos;t have a statistic yet</p>}
       <ul>
-        {statistic.reverse().map((entry, index) => (
+        {results.reverse().map((item, index) => (
           <li key={index}>
-            <p>Date: {entry.date},</p>
+            <p>Date: {formatDate(item.date.toDate())},</p>
             <p>
-              Correct Answers: {entry.correctAnswers} / {entry.totalQuestions}
+              Correct Answers: {item.correctAnswers} / {item.totalQuestions}
             </p>
           </li>
         ))}

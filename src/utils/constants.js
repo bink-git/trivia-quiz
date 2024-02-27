@@ -1,9 +1,11 @@
 export const MAIN_URL = 'https://opentdb.com/api.php';
+export const TEST_URL = 'https://trivia-quiz-firebase-login.vercel.app/';
 
 export const API_URL = `${MAIN_URL}?amount=1&category=9&difficulty=easy&type=multiple`;
 
 export const REQUEST_TOKEN =
   'https://opentdb.com/api_token.php?command=request';
+
 
 export const TEST_URL = 'https://trivia-quiz-develop.vercel.app/';
 export const SUCCESS_MESAGE =
