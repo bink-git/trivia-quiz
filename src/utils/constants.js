@@ -1,5 +1,5 @@
 export const MAIN_URL = 'https://opentdb.com/api.php';
-export const TEST_URL = 'https://trivia-quiz-firebase-login.vercel.app/';
+export const TEST_URL = 'http://127.0.0.1:5173/';
 
 export const API_URL = `${MAIN_URL}?amount=1&category=9&difficulty=easy&type=multiple`;
 

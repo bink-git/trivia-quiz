@@ -7,12 +7,14 @@ import LoginForm from './LoginForm';
 import Loader from './components/Loader';
 
 const LoggedIn = () => {
-  const [user] = useAuthState(auth);
-  const { search } = useLocation();
   const [userEmail, setUserEmail] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const [errorMessage, setErrorMessage] = useState('');
   const [infoMessage, setInfoMessage] = useState('');
+
+  const [user] = useAuthState(auth);
+
+  const { search } = useLocation();
 
   const navigate = useNavigate();
 
@@ -24,9 +26,7 @@ const LoggedIn = () => {
       }
       if (isSignInWithEmailLink(auth, window.location.href)) {
         let emailFromStorage = localStorage.getItem('email');
-
         setIsLoading(true);
-
         try {
           await signInWithEmailLink(
             auth,

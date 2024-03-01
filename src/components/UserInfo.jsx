@@ -1,10 +1,14 @@
+import { Button } from './ui/button';
+
 const UserInfo = ({ user, handleLogout }) => {
+  console.log('user', user);
   return (
-    <div className="user-content">
-      <p>User: {user.email ? user.email : user.displayName}</p>
-      <button className="btn-logout" onClick={handleLogout}>
-        Logout
-      </button>
+    <div className="flex justify-between">
+      <p>User: {user?.email ? user?.email : user?.displayName || 'Guest'}</p>
+
+      <Button variant="secondary" onClick={handleLogout}>
+        {user ? 'Logout' : 'Quit the game'}
+      </Button>
     </div>
   );
 };

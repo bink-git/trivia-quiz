@@ -1,15 +1,20 @@
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import Home from './Home';
-import LoggedIn from './LoggedIn';
+import Context from './context/GameContext';
+import LoginForm from './LoginForm';
+import Welcome from './components/Welcome';
 function App() {
   return (
-    <div className="wrapper">
-      <Router>
-        <Routes>
-          <Route exact path="/" element={<Home />} />
-          <Route path="/login" element={<LoggedIn />} />
-        </Routes>
-      </Router>
+    <div>
+      <Context>
+        <Router>
+          <Routes>
+            <Route exact path="/" element={<Home />} />
+            <Route path="/login" element={<LoginForm />} />
+            <Route path="/start" element={<Welcome />} />
+          </Routes>
+        </Router>
+      </Context>
     </div>
   );
 }

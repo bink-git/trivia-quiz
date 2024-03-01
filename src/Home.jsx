@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useContext } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 
@@ -16,6 +16,7 @@ import {
   query,
   where,
 } from 'firebase/firestore';
+import { SUCCESS_MESAGE, TEST_URL } from './utils/constants';
 
 import Header from './components/Header';
 import Result from './components/Result';
@@ -23,11 +24,14 @@ import Game from './Game';
 import Welcome from './components/Welcome';
 import Statistic from './components/Statistic';
 import GameSkeleton from './components/GameSkeleton';
-import Loader from './components/Loader';
 import UserInfo from './components/UserInfo';
-import LoggedIn from './LoggedIn';
 
-import { REQUEST_TOKEN, RESPONSE_CODES, MAIN_URL } from './utils/constants';
+import { REQUEST_TOKEN, MAIN_URL } from './utils/constants';
+import { GameContext } from './context/GameContext';
+import Modal from './components/Modal';
+import LoginForm from './LoginForm';
+import { sendSignInLinkToEmail } from 'firebase/auth';
+import { Button } from './components/ui/button';
 
 function Home() {
   const [data, setData] = useState([]);
@@ -42,12 +46,13 @@ function Home() {
   const [totalQuestions, setTotalQuestions] = useState(0);
   const [difficulty, setDifficulty] = useState('easy');
   const [results, setResults] = useState([]);
+  const [showModal, setShowModal] = useState(false);
+
+  const { anonymous, setAnonymous, userEmail } = useContext(GameContext);
 
   const [user, loading, error] = useAuthState(auth);
 
   const API_URL = `${MAIN_URL}?amount=1&category=9&difficulty=${difficulty}&type=multiple`;
-
-  const { code } = RESPONSE_CODES;
 
   const notifySuccess = () => toast.success('Successfully logged out');
   const notifyError = (message) => toast.error(message);
@@ -119,7 +124,7 @@ function Home() {
   const handleLogout = async () => {
     try {
       await auth.signOut();
-      navigate('/login');
+      navigate('/');
       onReset();
       notifySuccess();
     } catch (err) {
@@ -131,10 +136,12 @@ function Home() {
     setDifficulty(select);
   };
 
-  const onClickNext = async () => {
-    setIsLoading(true);
-    await handleFetch();
-    setIsLoading(false);
+  const onStart = () => {
+    setStart(false);
+    setReset(false);
+    setShowResult(false);
+    setIsStatisic(false);
+    fetchData();
   };
 
   const onClickAnswer = (answer) => {
@@ -144,12 +151,10 @@ function Home() {
     setTotalQuestions((total) => total + 1);
   };
 
-  const onStart = () => {
-    setStart(false);
-    setReset(false);
-    setShowResult(false);
-    setIsStatisic(false);
-    fetchData();
+  const onClickNext = async () => {
+    setIsLoading(true);
+    await handleFetch();
+    setIsLoading(false);
   };
 
   const onReset = () => {
@@ -160,6 +165,7 @@ function Home() {
     setShowResult(false);
     setIsStatisic(false);
     setTotalQuestions(0);
+    setAnonymous(false);
   };
 
   const onStatistic = async () => {
@@ -189,19 +195,41 @@ function Home() {
   };
 
   const onResults = async () => {
-    logUserStatistic(correctAnswers, totalQuestions);
+    if (user) {
+      // If user is logged in, directly log the statistic
+      logUserStatistic(correctAnswers, totalQuestions);
+    } else if (anonymous) {
+      // If user is anonymous, show the modal to register
+      setShowModal(true);
+    }
+  };
+
+  const onRegister = async () => {
+    try {
+      // Create user with email and password
+      await sendSignInLinkToEmail(auth, userEmail, {
+        url: TEST_URL,
+        handleCodeInApp: true,
+      });
+
+      setShowModal(false);
+
+      notifySuccess(SUCCESS_MESAGE);
+    } catch (error) {
+      notifyError('Registration error:', error.message);
+    }
   };
 
   const quest = data && data[step];
 
   return (
-    <div className="container">
-      {!user && <LoggedIn />}
+    <div className="container mx-auto flex flex-col justify-center py-10">
+      {/* {!user && <LoggedIn />} */}
 
-      {user ? (
+      {user || anonymous ? (
         <>
           <Header />
-          <div className="App">
+          <div className="rounded-3xl p-5 bg-white mx-auto max-w-[500px] w-full">
             <ToastContainer
               position="top-center"
               autoClose={3000}
@@ -220,10 +248,10 @@ function Home() {
               <Welcome onStart={onStart} onDifficulty={handleDifficulty} />
             )}
 
-            {!start && quest && !showResult && user && (
+            {!start && quest && !showResult && (user || anonymous) && (
               <>
                 <UserInfo user={user} handleLogout={handleLogout} />
-                <p className="correct">
+                <p className="mb-5">
                   Correct Answers: {correctAnswers} / {totalQuestions}
                 </p>
                 {isLoading && !start ? (
@@ -237,37 +265,33 @@ function Home() {
                   />
                 )}
 
-                <div className="buttons">
-                  <button className="next btn" onClick={onClickNext}>
-                    Next
-                  </button>
-
-                  <button className="btn" onClick={() => onResults()}>
-                    Finish
-                  </button>
+                <div className="mt-5 flex justify-between items-center">
+                  <Button onClick={onClickNext}>Next</Button>
+                  <Button onClick={onResults}>Finish</Button>
                 </div>
               </>
             )}
 
-            {step === data.length ||
-              (showResult && (
-                <Result
-                  correctAnswers={correctAnswers}
-                  reset={reset}
-                  onReset={onReset}
-                  totalQuestions={totalQuestions}
-                />
-              ))}
+            {showResult && (
+              <Result
+                correctAnswers={correctAnswers}
+                reset={reset}
+                onReset={onReset}
+                totalQuestions={totalQuestions}
+              />
+            )}
           </div>
+
+          {showModal && <Modal onRegister={onRegister} />}
         </>
       ) : (
-        <LoggedIn />
+        <LoginForm />
       )}
 
       {!start && !showResult && (
-        <button className="statistic-btn" onClick={onStatistic}>
+        <Button variant="statistic" onClick={onStatistic}>
           {isStatisic ? 'Hide statistic' : 'Show statistic'}
-        </button>
+        </Button>
       )}
 
       {error && notifyError(error.message)}

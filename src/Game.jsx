@@ -23,27 +23,27 @@ function Game({ quest, onClickAnswer }) {
   const answers = [correct_answer, ...incorrect_answers].sort();
 
   return (
-    <div className="game">
-      <h2>
+    <div className="flex flex-col mb-10">
+      <h2 className="mb-5 text-3xl font-bold ">
         {decodeTitle || (
           <Skeleton count={1} width={100} style={{ width: '600px' }} />
         )}
       </h2>
-      <ul>
+      <ul className="p-0">
         {answers.map((answer) => (
           <li
             onClick={() => handleAnswerClick(answer)}
             style={{
-              cursor: selectedAnswer ? 'not-allowed' : 'pointer',
+              cursor: selectedAnswer ? 'cursor-not-allowed' : 'cursor-pointer',
             }}
             className={`${
               selectedAnswer &&
               (answer === correct_answer
-                ? 'correct'
+                ? 'bg-green-400  border-2 border-green-600 rounded-[16px] mb-3 cursor-pointer transition-all'
                 : answer === selectedAnswer
-                ? 'incorrect'
+                ? 'bg-red-400  border-2 border-red-600 rounded-[16px] mb-3 cursor-pointer transition-all'
                 : '')
-            }`}
+            } w-full p-4 border-2 rounded-2xl mb-3 cursor-pointer transition-all text-xl`}
             key={answer}
           >
             {he.decode(answer)}
