@@ -1,6 +1,6 @@
-import { useEffect, useState } from 'react';
-import he from 'he';
-import Skeleton from 'react-loading-skeleton';
+import { useEffect, useState } from "react";
+import he from "he";
+import Skeleton from "react-loading-skeleton";
 
 function Game({ quest, onClickAnswer }) {
   const { incorrect_answers, correct_answer, question } = quest;
@@ -23,27 +23,27 @@ function Game({ quest, onClickAnswer }) {
   const answers = [correct_answer, ...incorrect_answers].sort();
 
   return (
-    <div className="flex flex-col mb-10">
-      <h2 className="mb-5 text-3xl font-bold ">
+    <div className="flex flex-col gap-6">
+      <h2 className="text-3xl font-bold">
         {decodeTitle || (
-          <Skeleton count={1} width={100} style={{ width: '600px' }} />
+          <Skeleton count={1} width={100} style={{ width: "600px" }} />
         )}
       </h2>
-      <ul className="p-0">
+      <ul className="flex flex-col gap-2">
         {answers.map((answer) => (
           <li
             onClick={() => handleAnswerClick(answer)}
             style={{
-              cursor: selectedAnswer ? 'cursor-not-allowed' : 'cursor-pointer',
+              cursor: selectedAnswer ? "not-allowed" : "pointer",
             }}
             className={`${
               selectedAnswer &&
               (answer === correct_answer
-                ? 'bg-green-400  border-2 border-green-600 rounded-[16px] mb-3 cursor-pointer transition-all'
+                ? " border-green-400 bg-green-300"
                 : answer === selectedAnswer
-                ? 'bg-red-400  border-2 border-red-600 rounded-[16px] mb-3 cursor-pointer transition-all'
-                : '')
-            } w-full p-4 border-2 rounded-2xl mb-3 cursor-pointer transition-all text-xl`}
+                  ? " border-red-400 bg-red-300"
+                  : "")
+            } mb-3 w-full cursor-pointer rounded-2xl border-2 p-4 text-xl transition-all`}
             key={answer}
           >
             {he.decode(answer)}

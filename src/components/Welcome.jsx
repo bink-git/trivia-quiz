@@ -1,63 +1,31 @@
-import { useState } from 'react';
-import { Button } from './ui/button';
-// import {
-//   Select,
-//   SelectContent,
-//   SelectGroup,
-//   SelectItem,
-//   SelectLabel,
-//   SelectTrigger,
-//   SelectValue,
-// } from '@/components/ui/select';
+import { Button } from "./ui/button";
+import { useSharedState } from "@/context/sharedContext";
 
-const Welcome = ({ onStart, onDifficulty }) => {
-  const [select, setSelect] = useState('');
-
-  const handleSelect = (event) => {
-    setSelect(event.target.value);
-    onDifficulty(event.target.value);
-  };
+const Welcome = ({ onStart }) => {
+  const { state, dispatch } = useSharedState();
 
   return (
-    <div className="flex items-center justify-center flex-col gap-5">
-      <p className="text-4xl font-bold text-background text-center">
+    <div className="mx-auto flex max-w-[500px] flex-col items-center justify-center gap-5 rounded-3xl bg-white p-5">
+      <p className="text-center text-4xl font-bold text-background">
         Welcome to the Trivia Challenge
       </p>
-      <label className="text-background font-bold" htmlFor="selectOption">
+      <label className="font-bold text-background" htmlFor="selectOption">
         Please, select difficulty
       </label>
       <select
         name="select"
         id="selectOption"
-        value={select}
-        onChange={handleSelect}
-        className="w-[180px] text-lg p-3 border-2 border-background rounded-full bg-white outline-none"
+        defaultValue={state.difficulty}
+        onChange={(e) => {
+          dispatch({ type: "SET_DIFFICALTY", payload: e.target.value });
+        }}
+        className="w-[180px] rounded-full border-2 border-background bg-white p-3 text-lg outline-none"
       >
         <option value="easy">😉 Easy</option>
         <option value="medium">🙄 Medium</option>
         <option value="hard">😓 Hard</option>
       </select>
-      {/* <Select onValueChange={() => handleSelect()} value={select}>
-        <SelectTrigger
-          className="w-[180px] text-lg p-3 border-2 border-background rounded-full bg-white"
-          value={select}
-        >
-          <SelectValue placeholder="Select a difficalty" />
-        </SelectTrigger>
-        <SelectContent>
-          <SelectGroup>
-            <SelectItem className="text-lg" value="easy">
-              😉 Easy
-            </SelectItem>
-            <SelectItem className="text-lg" value="medium">
-              🙄 Medium
-            </SelectItem>
-            <SelectItem className="text-lg" value="hard">
-              😓 Hard
-            </SelectItem>
-          </SelectGroup>
-        </SelectContent>
-      </Select> */}
+
       <Button onClick={onStart}>Start Quiz</Button>
     </div>
   );

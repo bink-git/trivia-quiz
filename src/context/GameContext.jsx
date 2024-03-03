@@ -1,21 +1,23 @@
-import { createContext, useState } from 'react';
+import { createContext, useReducer } from "react";
+import { reducer, initialState } from "./reducer";
 
-export const GameContext = createContext();
+export const GameContext = createContext(initialState);
 
-const Context = (props) => {
-  const [anonymous, setAnonymous] = useState(false);
-  const [userEmail, setUserEmail] = useState('');
+export const Context = ({ children }) => {
+  const [state, dispatch] = useReducer(reducer, initialState);
 
-  const value = {
-    anonymous,
-    setAnonymous,
-    userEmail,
-    setUserEmail,
-  };
+  // const value = {
+  //   userEmail,
+  //   setUserEmail,
+  //   showModal,
+  //   setShowModal,
+  // };
 
   return (
-    <GameContext.Provider value={value}>{props.children}</GameContext.Provider>
+    <GameContext.Provider value={{ state, dispatch }}>
+      {children}
+    </GameContext.Provider>
   );
 };
 
-export default Context;
+// export default Context;
