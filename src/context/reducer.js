@@ -6,7 +6,6 @@ export const initialState = {
   step: 0,
   token: "",
   userEmail: "",
-  select: "",
   difficulty: "easy",
   start: true,
   reset: true,
@@ -22,10 +21,10 @@ export const reducer = (state, action) => {
   switch (action.type) {
     case "SET_DIFFICALTY":
       return { ...state, difficulty: action.payload };
-    case "START":
-      return { ...state, start: false, reset: false };
-    case "RESET":
-      return { initialState };
+    // case "START":
+    //   return { ...state, start: false, reset: false };
+    case "RESET_GAME":
+      return { ...initialState };
     case "RESET_SCORES":
       return { ...state, correctAnswers: 0, totalQuestions: 0 };
     case "SET_DATA":

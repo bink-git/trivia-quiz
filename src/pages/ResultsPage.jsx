@@ -93,6 +93,7 @@ function ResultsPage() {
             </Button>
             <Button
               onClick={() => {
+                dispatch({ type: "RESET_GAME" });
                 navigate("/login");
               }}
             >

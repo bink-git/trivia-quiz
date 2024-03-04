@@ -1,4 +1,4 @@
-import Game from "@/Game";
+import Game from "@/components/Game";
 import GameSkeleton from "@/components/GameSkeleton";
 import UserHistory from "@/components/UserHistory";
 import UserInfo from "@/components/UserInfo";

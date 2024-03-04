@@ -1,7 +1,6 @@
 import { useEffect, useState } from "react";
 import he from "he";
-import { Skeleton } from "@/components/ui/skeleton";
-import { useSharedState } from "./context/sharedContext";
+import { useSharedState } from "../context/sharedContext";
 import { toast } from "react-toastify";
 
 function Game({ quest }) {
@@ -13,8 +12,8 @@ function Game({ quest }) {
   const [selectedAnswer, setSelectedAnswer] = useState(null);
 
   const { incorrect_answers, correct_answer, question } = quest;
-  const decodeTitle = he.decode(question);
   const answers = [correct_answer, ...incorrect_answers];
+  const decodeTitle = he.decode(question);
 
   useEffect(() => {
     setSelectedAnswer(null);
@@ -36,9 +35,7 @@ function Game({ quest }) {
 
   return (
     <div className="flex flex-col gap-6">
-      <h2 className="text-2xl font-bold">
-        {decodeTitle || <Skeleton className="w-full" />}
-      </h2>
+      <h2 className="text-2xl font-bold">{decodeTitle}</h2>
 
       <ul className="flex flex-col gap-2">
         {answers.map((answer) => (

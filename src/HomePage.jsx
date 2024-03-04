@@ -8,7 +8,7 @@ import { useAuthState } from "react-firebase-hooks/auth";
 import { auth, db } from "./utils/firebaseConfig";
 
 import Result from "./pages/ResultsPage";
-import Game from "./Game";
+import Game from "./components/Game";
 import WelcomePage from "./pages/WelcomePage";
 import UserHistory from "./components/UserHistory";
 import GameSkeleton from "./components/GameSkeleton";
