@@ -7,6 +7,7 @@ export const REQUEST_TOKEN =
   "https://opentdb.com/api_token.php?command=request";
 
 export const SUCCESS_MESAGE = "Check your email for the sign-in link";
+export const LOGOUT_MESAGE = "Successfully logged out!";
 
 export const RESPONSE_CODES = [
   { code: 0, message: "Success" },

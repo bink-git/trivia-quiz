@@ -9,7 +9,7 @@ import {
   DialogTitle,
 } from "@/components/ui/dialog";
 
-import LoginForm from "@/LoginForm";
+import LoginForm from "@/components/LoginForm";
 import { sendSignInLinkToEmail } from "firebase/auth";
 import { auth, db } from "@/utils/firebaseConfig";
 import { useAuthState } from "react-firebase-hooks/auth";
@@ -19,7 +19,7 @@ import { toast } from "react-toastify";
 import { collection, addDoc, Timestamp } from "firebase/firestore";
 import { useSharedState } from "@/context/sharedContext";
 
-function Result() {
+function ResultsPage() {
   const navigate = useNavigate();
   const {
     state: { showModal, correctAnswers, totalQuestions, userEmail, results },
@@ -44,35 +44,11 @@ function Result() {
         };
         dispatch({ type: "SET_RESULTS", payload: [...results, newData] });
         await addDoc(collection(db, "history"), newData);
-        // setShowResult(true);
-        // setIsStatisic(false);
       } catch (error) {
-        console.log(error);
         notifyError(error.message);
       }
     }
   };
-
-  // const handleLogin = async () => {
-  //   try {
-  //     const success = await sendSignInLinkToEmail(
-  //       userEmail,
-  //       actionCodeSettings,
-  //     );
-  //     localStorage.setItem("email", userEmail);
-  //     if (success) {
-  //       notifyInfo("Check your email for the sign-in link");
-  //       logUserStatistic(correctAnswers, totalQuestions);
-  //       setAnonymous(false);
-  //     }
-  //   } catch (error) {
-  //     console.log(error);
-  //     notifyError(error.message);
-  //     setAnonymous(false);
-  //   } finally {
-  //     navigate("/results");
-  //   }
-  // };
 
   const onRegister = async () => {
     try {
@@ -109,8 +85,8 @@ function Result() {
           <div className="flex justify-center gap-5">
             <Button
               onClick={() => {
-                console.log("Reset button clicked");
-                navigate("/");
+                navigate("/welcome");
+                dispatch({ type: "RESET" });
               }}
             >
               Try again
@@ -149,4 +125,4 @@ function Result() {
   );
 }
 
-export default Result;
+export default ResultsPage;

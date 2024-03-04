@@ -7,7 +7,7 @@ import {
   useSignInWithEmailLink,
   useSendSignInLinkToEmail,
 } from "react-firebase-hooks/auth";
-import { TEST_URL } from "@/utils/constants";
+import { SUCCESS_MESAGE, TEST_URL } from "@/utils/constants";
 import { toast } from "react-toastify";
 import Loader from "./Loader";
 import { Input } from "@/components/ui/input";
@@ -27,11 +27,6 @@ const EmailAuth = () => {
   const [sendSignInLinkToEmail, sending] = useSendSignInLinkToEmail(auth);
   const [signInWithEmailLink] = useSignInWithEmailLink(auth);
 
-  const actionCodeSettings = {
-    url: TEST_URL,
-    handleCodeInApp: true,
-  };
-
   useEffect(() => {
     const authenticateUser = async () => {
       if (user) {
@@ -42,7 +37,7 @@ const EmailAuth = () => {
 
       if (isSignInWithEmailLink(auth, window.location.href)) {
         let emailFromStorage = localStorage.getItem("email");
-
+        dispatch({ type: "LOADING_TRUE" });
         try {
           await signInWithEmailLink(
             auth,
@@ -50,10 +45,12 @@ const EmailAuth = () => {
             window.location.href,
           );
           localStorage.removeItem("email");
-          navigate("/");
+          navigate("/welcome");
+          dispatch({ type: "LOADING_FALSE" });
         } catch (error) {
           notifyError(error.message);
           navigate("/login");
+          dispatch({ type: "LOADING_FALSE" });
         }
       }
     };
@@ -64,9 +61,9 @@ const EmailAuth = () => {
     notifyError(error.message);
   }
 
-  if (sending) {
-    return <p>Sending...</p>;
-  }
+  // if (sending) {
+  //   return <p>Sending...</p>;
+  // }
 
   if (loading) {
     return <Loader />;
@@ -74,17 +71,22 @@ const EmailAuth = () => {
 
   const handleLogin = async (event) => {
     event.preventDefault();
+    dispatch({ type: "LOADING_TRUE" });
     try {
-      const success = await sendSignInLinkToEmail(
-        state.userEmail,
-        actionCodeSettings,
-      );
+      const success = await sendSignInLinkToEmail(state.userEmail, {
+        url: TEST_URL,
+        handleCodeInApp: true,
+      });
       localStorage.setItem("email", state.userEmail);
       if (success) {
-        notifyInfo("Check your email for the sign-in link");
+        notifyInfo(SUCCESS_MESAGE);
+        dispatch({ type: "LOADING_FALSE" });
       }
     } catch (error) {
       notifyError(error.message);
+      dispatch({ type: "LOADING_FALSE" });
+    } finally {
+      dispatch({ type: "LOADING_FALSE" });
     }
   };
 
@@ -101,7 +103,7 @@ const EmailAuth = () => {
         className="rounded-2xl border-2 border-background bg-slate-50 p-6 text-xl outline-none focus-visible:ring-slate-300"
       />
       <Button type="submit" variant="default" onClick={handleLogin}>
-        Login
+        {sending ? "Logging you in..." : "Login"}
       </Button>
     </div>
   );

@@ -14,7 +14,7 @@ export const initialState = {
   showResults: false,
   showModal: false,
   showStatisic: false,
-  isLoading: true,
+  isLoading: false,
   isHistory: false,
 };
 

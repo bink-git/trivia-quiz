@@ -1,16 +1,16 @@
-import { useState, useEffect } from 'react';
-import { useAuthState } from 'react-firebase-hooks/auth';
-import { auth } from './utils/firebaseConfig';
-import { useNavigate, useLocation } from 'react-router-dom';
-import { isSignInWithEmailLink, signInWithEmailLink } from 'firebase/auth';
-import LoginForm from './LoginForm';
-import Loader from './components/Loader';
+import { useState, useEffect } from "react";
+import { useAuthState } from "react-firebase-hooks/auth";
+import { auth } from "./utils/firebaseConfig";
+import { useNavigate, useLocation } from "react-router-dom";
+import { isSignInWithEmailLink, signInWithEmailLink } from "firebase/auth";
+import LoginForm from "./components/LoginForm";
+import Loader from "./components/Loader";
 
 const LoggedIn = () => {
-  const [userEmail, setUserEmail] = useState('');
+  const [userEmail, setUserEmail] = useState("");
   const [isLoading, setIsLoading] = useState(false);
-  const [errorMessage, setErrorMessage] = useState('');
-  const [infoMessage, setInfoMessage] = useState('');
+  const [errorMessage, setErrorMessage] = useState("");
+  const [infoMessage, setInfoMessage] = useState("");
 
   const [user] = useAuthState(auth);
 
@@ -21,23 +21,23 @@ const LoggedIn = () => {
   useEffect(() => {
     const authenticateUser = async () => {
       if (user) {
-        navigate('/');
+        navigate("/");
         return;
       }
       if (isSignInWithEmailLink(auth, window.location.href)) {
-        let emailFromStorage = localStorage.getItem('email');
+        let emailFromStorage = localStorage.getItem("email");
         setIsLoading(true);
         try {
           await signInWithEmailLink(
             auth,
             emailFromStorage,
-            window.location.href
+            window.location.href,
           );
-          localStorage.removeItem('email');
-          navigate('/');
+          localStorage.removeItem("email");
+          navigate("/");
         } catch (error) {
           setErrorMessage(error.message);
-          navigate('/login');
+          navigate("/login");
         } finally {
           setIsLoading(false);
         }

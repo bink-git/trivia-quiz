@@ -2,6 +2,7 @@ import axios from "axios";
 import { useSharedState } from "@/context/sharedContext";
 import { REQUEST_TOKEN, MAIN_URL } from "../utils/constants";
 import { toast } from "react-toastify";
+import { useEffect } from "react";
 
 const useDataFetching = () => {
   const {
@@ -15,7 +16,6 @@ const useDataFetching = () => {
 
   const fetchData = async () => {
     try {
-      dispatch({ type: "LOADING_TRUE" });
       const userToken = await axios.get(REQUEST_TOKEN);
       const { token, response_code, response_message } = userToken.data;
 
@@ -30,7 +30,6 @@ const useDataFetching = () => {
       dispatch({ type: "SET_TOKEN", payload: token });
 
       const res = await axios.get(`${API_URL}&token=${token}`);
-      console.log(res.data.results);
       dispatch({ type: "SET_DATA", payload: res.data.results });
       dispatch({ type: "LOADING_FALSE" });
     } catch (error) {

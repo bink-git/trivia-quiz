@@ -1,4 +1,4 @@
-import LoginForm from "@/LoginForm";
+import LoginForm from "@/components/LoginForm";
 import GuestAuth from "@/components/GuestAuth";
 
 const LoginPage = () => {

@@ -1,17 +1,31 @@
 import { useEffect, useState } from "react";
 import he from "he";
 import Skeleton from "react-loading-skeleton";
+import { useSharedState } from "./context/sharedContext";
+import { toast } from "react-toastify";
 
-function Game({ quest, onClickAnswer }) {
-  const { incorrect_answers, correct_answer, question } = quest;
+function Game({ quest }) {
+  const {
+    state: { data, step, correctAnswers, totalQuestions, isLoading },
+    dispatch,
+  } = useSharedState();
 
   const [selectedAnswer, setSelectedAnswer] = useState(null);
 
+  const { incorrect_answers, correct_answer, question } = quest;
   const decodeTitle = he.decode(question);
+  const answers = [correct_answer, ...incorrect_answers];
 
   useEffect(() => {
     setSelectedAnswer(null);
   }, [quest]);
+
+  const onClickAnswer = (answer) => {
+    if (data[step].correct_answer === answer) {
+      dispatch({ type: "SET_CORRECT_ANSWERS", payload: correctAnswers + 1 });
+    }
+    dispatch({ type: "SET_TOTAL_QUESTIONS", payload: totalQuestions + 1 });
+  };
 
   const handleAnswerClick = (answer) => {
     if (!selectedAnswer) {
@@ -20,15 +34,14 @@ function Game({ quest, onClickAnswer }) {
     }
   };
 
-  const answers = [correct_answer, ...incorrect_answers].sort();
-
   return (
     <div className="flex flex-col gap-6">
-      <h2 className="text-3xl font-bold">
+      <h2 className="text-2xl font-bold">
         {decodeTitle || (
           <Skeleton count={1} width={100} style={{ width: "600px" }} />
         )}
       </h2>
+
       <ul className="flex flex-col gap-2">
         {answers.map((answer) => (
           <li

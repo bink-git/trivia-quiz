@@ -2,8 +2,8 @@ import { Button } from "./ui/button";
 import { useNavigate } from "react-router-dom";
 import { useSharedState } from "@/context/sharedContext";
 
-const GuestAuth = ({ onStart }) => {
-  const { state, dispatch } = useSharedState();
+const GuestAuth = () => {
+  const { dispatch } = useSharedState();
   const navigate = useNavigate();
 
   return (
@@ -17,11 +17,10 @@ const GuestAuth = ({ onStart }) => {
       <Button
         onClick={() => {
           dispatch({ type: "SET_ANONYMOUS" });
-          // onStart();
-          // navigate("/start");
+          navigate("/welcome");
         }}
       >
-        Play without logging in
+        Play as Guest
       </Button>
     </div>
   );
