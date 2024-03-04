@@ -86,7 +86,7 @@ function ResultsPage() {
             <Button
               onClick={() => {
                 navigate("/welcome");
-                dispatch({ type: "RESET" });
+                dispatch({ type: "RESET_SCORES" });
               }}
             >
               Try again

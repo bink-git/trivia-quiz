@@ -1,24 +1,23 @@
-import Skeleton from 'react-loading-skeleton';
-import 'react-loading-skeleton/dist/skeleton.css';
+import { Skeleton } from "@/components/ui/skeleton";
 
 const GameSkeleton = () => {
   return (
-    <div className="flex flex-col flex-1 mb-10">
+    <div className="flex flex-1 flex-col">
       <h2>
-        <Skeleton count={1} className="h-[60px] mb-5 rounded-[16px]" />
+        <Skeleton className="mb-5 h-[80px] rounded-[16px]" />
       </h2>
-      <ul className="p-0">
-        <li className="p-4 border-2 rounded-[16px] mb-3">
-          <Skeleton count={1} />
+      <ul className="space-y-4">
+        <li className="flex h-[60px] w-full items-center justify-center rounded-[16px] border-2 p-4">
+          <Skeleton className="h-[30px] w-full rounded-[10px]" />
         </li>
-        <li className="p-4 border-2 rounded-[16px] mb-3">
-          <Skeleton count={1} />
+        <li className="flex h-[60px] w-full items-center justify-center rounded-[16px] border-2 p-4">
+          <Skeleton className="h-[30px] w-full rounded-[10px]" />
         </li>
-        <li className="p-4 border-2 rounded-[16px] mb-3">
-          <Skeleton count={1} />
+        <li className="flex h-[60px] w-full items-center justify-center rounded-[16px] border-2 p-4">
+          <Skeleton className="h-[30px] w-full rounded-[10px]" />
         </li>
-        <li className="p-4 border-2 rounded-[16px] mb-3">
-          <Skeleton count={1} />
+        <li className="flex h-[60px] w-full items-center justify-center rounded-[16px] border-2 p-4">
+          <Skeleton className="h-[30px] w-full rounded-[10px]" />
         </li>
       </ul>
     </div>

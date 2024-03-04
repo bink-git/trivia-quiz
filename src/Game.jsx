@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import he from "he";
-import Skeleton from "react-loading-skeleton";
+import { Skeleton } from "@/components/ui/skeleton";
 import { useSharedState } from "./context/sharedContext";
 import { toast } from "react-toastify";
 
@@ -37,9 +37,7 @@ function Game({ quest }) {
   return (
     <div className="flex flex-col gap-6">
       <h2 className="text-2xl font-bold">
-        {decodeTitle || (
-          <Skeleton count={1} width={100} style={{ width: "600px" }} />
-        )}
+        {decodeTitle || <Skeleton className="w-full" />}
       </h2>
 
       <ul className="flex flex-col gap-2">

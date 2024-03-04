@@ -26,6 +26,8 @@ export const reducer = (state, action) => {
       return { ...state, start: false, reset: false };
     case "RESET":
       return { initialState };
+    case "RESET_SCORES":
+      return { ...state, correctAnswers: 0, totalQuestions: 0 };
     case "SET_DATA":
       return { ...state, data: action.payload };
     case "SET_TOKEN":
