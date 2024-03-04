@@ -18,6 +18,9 @@ import { toast } from "react-toastify";
 
 import { collection, addDoc, Timestamp } from "firebase/firestore";
 import { useSharedState } from "@/context/sharedContext";
+import { Input } from "@/components/ui/input";
+import GoogleAuth from "@/components/GoogleAuth";
+import GithubAuth from "@/components/GithubAuth";
 
 function ResultsPage() {
   const navigate = useNavigate();
@@ -111,13 +114,33 @@ function ResultsPage() {
                 </DialogTitle>
               </DialogHeader>
               <div className="grid gap-4 py-4">
-                <LoginForm />
+                {/* <LoginForm /> */}
+                <Input
+                  type="email"
+                  required
+                  placeholder="Your email"
+                  value={userEmail}
+                  onChange={(e) =>
+                    dispatch({
+                      type: "SET_USER_EMAIL",
+                      payload: e.target.value,
+                    })
+                  }
+                  className="rounded-2xl border-2 border-background bg-slate-50 p-6 text-xl outline-none focus-visible:ring-slate-300"
+                />
+                <Button type="submit" onClick={onRegister} className="mx-auto">
+                  Register
+                </Button>
+                <div className="mx-auto mt-5 flex gap-5">
+                  <GoogleAuth />
+                  <GithubAuth />
+                </div>
               </div>
-              <DialogFooter>
+              {/* <DialogFooter>
                 <Button type="submit" onClick={onRegister}>
                   Register
                 </Button>
-              </DialogFooter>
+              </DialogFooter> */}
             </DialogContent>
           </Dialog>
         </div>

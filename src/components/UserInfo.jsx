@@ -4,10 +4,9 @@ import { Button } from "./ui/button";
 import { useNavigate } from "react-router";
 import { toast } from "react-toastify";
 import { LOGOUT_MESAGE } from "@/utils/constants";
-import { useEffect } from "react";
 
 const UserInfo = ({ user }) => {
-  const { state, dispatch } = useSharedState();
+  const { dispatch } = useSharedState();
   const navigate = useNavigate();
 
   const notifySuccess = () => toast.success(LOGOUT_MESAGE);
@@ -17,17 +16,12 @@ const UserInfo = ({ user }) => {
     try {
       await auth.signOut();
       dispatch({ type: "RESET_GAME" });
-      console.log(state);
       navigate("/login");
       notifySuccess();
     } catch (err) {
       notifyError(err.message);
     }
   };
-
-  useEffect(() => {
-    console.log(state); // Log the state whenever it changes
-  }, [state]);
 
   return (
     <div className="mb-2 flex items-center justify-between text-lg">

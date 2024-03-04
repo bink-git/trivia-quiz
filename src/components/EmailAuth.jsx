@@ -102,7 +102,7 @@ const EmailAuth = () => {
         }
         className="rounded-2xl border-2 border-background bg-slate-50 p-6 text-xl outline-none focus-visible:ring-slate-300"
       />
-      <Button type="submit" variant="default" onClick={handleLogin}>
+      <Button type="submit" disabled={sending} onClick={handleLogin}>
         {sending ? "Logging you in..." : "Login"}
       </Button>
     </div>
