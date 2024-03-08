@@ -30,7 +30,7 @@ const EmailAuth = () => {
   useEffect(() => {
     const authenticateUser = async () => {
       if (user) {
-        navigate("/");
+        navigate("/welcome");
         dispatch({ type: "DISABLE_ANONYMOUS" });
         return;
       }

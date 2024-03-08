@@ -1,5 +1,5 @@
 export const MAIN_URL = "https://opentdb.com/api.php";
-export const TEST_URL = "http://localhost:5173/login";
+export const TEST_URL = "http://localhost:5173/";
 
 export const API_URL = `${MAIN_URL}?amount=1&category=9&difficulty=easy&type=multiple`;
 
