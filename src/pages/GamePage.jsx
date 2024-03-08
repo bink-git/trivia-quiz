@@ -27,7 +27,6 @@ const GamePage = () => {
       step,
       correctAnswers,
       totalQuestions,
-
       isLoading,
     },
     dispatch,
