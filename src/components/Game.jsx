@@ -1,18 +1,17 @@
 import { useEffect, useState } from "react";
 import he from "he";
 import { useSharedState } from "../context/sharedContext";
-import { toast } from "react-toastify";
 
 function Game({ quest }) {
   const {
-    state: { data, step, correctAnswers, totalQuestions, isLoading },
+    state: { data, step, correctAnswers, totalQuestions },
     dispatch,
   } = useSharedState();
 
   const [selectedAnswer, setSelectedAnswer] = useState(null);
 
   const { incorrect_answers, correct_answer, question } = quest;
-  const answers = [correct_answer, ...incorrect_answers];
+  const answers = [correct_answer, ...incorrect_answers].sort();
   const decodeTitle = he.decode(question);
 
   useEffect(() => {

@@ -37,12 +37,18 @@ const GamePage = () => {
 
   const navigate = useNavigate();
   const notifyError = (message) => toast.error(message);
-  const quest = data && data[step];
+  // const quest = data && data[step];
+  const quest = data[step];
 
   const [user, loading, error] = useAuthState(auth);
 
   const onClickNext = async () => {
-    await handleFetch();
+    dispatch({ type: "SET_STEP", payload: step + 1 });
+
+    if (step + 1 >= data.length) {
+      dispatch({ type: "SET_STEP", payload: 0 });
+      await handleFetch();
+    }
   };
 
   const onResults = () => {
@@ -107,7 +113,9 @@ const GamePage = () => {
               {isLoading ? <GameSkeleton /> : <Game quest={quest} />}
             </CardContent>
             <CardFooter className="flex items-center justify-between">
-              <Button onClick={onClickNext}>Next</Button>
+              <Button onClick={onClickNext} disabled={isLoading}>
+                Next
+              </Button>
 
               {user ? (
                 <Button onClick={onResults}>Finish</Button>

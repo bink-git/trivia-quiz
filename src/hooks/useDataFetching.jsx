@@ -2,7 +2,6 @@ import axios from "axios";
 import { useSharedState } from "@/context/sharedContext";
 import { REQUEST_TOKEN, MAIN_URL } from "../utils/constants";
 import { toast } from "react-toastify";
-import { useEffect } from "react";
 
 const useDataFetching = () => {
   const {
@@ -12,7 +11,7 @@ const useDataFetching = () => {
 
   const notifyError = (message) => toast.error(message);
 
-  const API_URL = `${MAIN_URL}?amount=1&category=9&difficulty=${difficulty}&type=multiple`;
+  const API_URL = `${MAIN_URL}?amount=10&category=9&difficulty=${difficulty}&type=multiple`;
 
   const fetchData = async () => {
     try {
@@ -42,19 +41,19 @@ const useDataFetching = () => {
   const handleFetch = async () => {
     try {
       dispatch({ type: "LOADING_TRUE" });
+
       const res = await axios.get(`${API_URL}&token=${token}`);
       dispatch({ type: "SET_DATA", payload: res.data.results });
+      console.log(res.data.results, "result");
+
       dispatch({ type: "LOADING_FALSE" });
     } catch (error) {
       notifyError(error.message);
+      dispatch({ type: "LOADING_FALSE" });
     }
   };
 
-  // useEffect(() => {
-  //   fetchData();
-  // }, []);
-
-  return { fetchData, handleFetch };
+  return { handleFetch, fetchData };
 };
 
 export default useDataFetching;
