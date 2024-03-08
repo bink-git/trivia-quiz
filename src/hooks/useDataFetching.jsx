@@ -27,7 +27,6 @@ const useDataFetching = () => {
       }
 
       dispatch({ type: "SET_TOKEN", payload: token });
-
       const res = await axios.get(`${API_URL}&token=${token}`);
       dispatch({ type: "SET_DATA", payload: res.data.results });
       dispatch({ type: "LOADING_FALSE" });
@@ -41,11 +40,8 @@ const useDataFetching = () => {
   const handleFetch = async () => {
     try {
       dispatch({ type: "LOADING_TRUE" });
-
       const res = await axios.get(`${API_URL}&token=${token}`);
       dispatch({ type: "SET_DATA", payload: res.data.results });
-      console.log(res.data.results, "result");
-
       dispatch({ type: "LOADING_FALSE" });
     } catch (error) {
       notifyError(error.message);

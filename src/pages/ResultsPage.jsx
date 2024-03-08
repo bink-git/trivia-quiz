@@ -4,12 +4,10 @@ import { Button } from "../components/ui/button";
 import {
   Dialog,
   DialogContent,
-  DialogFooter,
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog";
 
-import LoginForm from "@/components/LoginForm";
 import { sendSignInLinkToEmail } from "firebase/auth";
 import { auth, db } from "@/utils/firebaseConfig";
 import { useAuthState } from "react-firebase-hooks/auth";
@@ -50,6 +48,16 @@ function ResultsPage() {
       } catch (error) {
         notifyError(error.message);
       }
+    }
+  };
+
+  const handleLogout = async () => {
+    try {
+      await auth.signOut();
+      dispatch({ type: "RESET_GAME" });
+      navigate("/");
+    } catch (err) {
+      notifyError(err.message);
     }
   };
 
@@ -94,14 +102,18 @@ function ResultsPage() {
             >
               Try again
             </Button>
-            <Button
-              onClick={() => {
-                dispatch({ type: "RESET_GAME" });
-                navigate("/login");
-              }}
-            >
-              Quit the game
-            </Button>
+            {user ? (
+              <Button onClick={handleLogout}>Quit the game</Button>
+            ) : (
+              <Button
+                onClick={() => {
+                  dispatch({ type: "RESET_GAME" });
+                  navigate("/");
+                }}
+              >
+                Quit the game
+              </Button>
+            )}
           </div>
           <Dialog
             open={showModal}
@@ -114,7 +126,6 @@ function ResultsPage() {
                 </DialogTitle>
               </DialogHeader>
               <div className="grid gap-4 py-4">
-                {/* <LoginForm /> */}
                 <Input
                   type="email"
                   required
@@ -136,11 +147,6 @@ function ResultsPage() {
                   <GithubAuth />
                 </div>
               </div>
-              {/* <DialogFooter>
-                <Button type="submit" onClick={onRegister}>
-                  Register
-                </Button>
-              </DialogFooter> */}
             </DialogContent>
           </Dialog>
         </div>

@@ -49,7 +49,7 @@ const EmailAuth = () => {
           dispatch({ type: "LOADING_FALSE" });
         } catch (error) {
           notifyError(error.message);
-          navigate("/login");
+          navigate("/");
           dispatch({ type: "LOADING_FALSE" });
         }
       }
