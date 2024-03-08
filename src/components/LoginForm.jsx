@@ -48,7 +48,7 @@ const LoginForm = () => {
           navigate("/welcome");
         } catch (error) {
           notifyError(error.message);
-          navigate("/login");
+          navigate("/");
         } finally {
           dispatch({ type: "LOADING_FALSE" });
         }
