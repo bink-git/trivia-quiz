@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import he from "he";
 import { useSharedState } from "../context/sharedContext";
+import { Button } from "./ui/button";
 
 function Game({ quest }) {
   const {
@@ -36,13 +37,14 @@ function Game({ quest }) {
     <div className="flex flex-col gap-6">
       <h2 className="text-2xl font-bold">{decodeTitle}</h2>
 
-      <ul className="flex flex-col gap-2">
+      <div className="flex flex-col gap-2">
         {answers.map((answer) => (
-          <li
+          <Button
             onClick={() => handleAnswerClick(answer)}
             style={{
               cursor: selectedAnswer ? "not-allowed" : "pointer",
             }}
+            variant="answer"
             className={`${
               selectedAnswer &&
               (answer === correct_answer
@@ -50,13 +52,13 @@ function Game({ quest }) {
                 : answer === selectedAnswer
                   ? " border-red-400 bg-red-300"
                   : "")
-            } mb-3 w-full cursor-pointer rounded-2xl border-2 p-4 text-xl transition-all`}
+            }     `}
             key={answer}
           >
             {he.decode(answer)}
-          </li>
+          </Button>
         ))}
-      </ul>
+      </div>
     </div>
   );
 }
