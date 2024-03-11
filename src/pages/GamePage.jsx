@@ -36,17 +36,14 @@ const GamePage = () => {
 
   const navigate = useNavigate();
   const notifyError = (message) => toast.error(message);
-  // const quest = data && data[step];
-  const quest = data[step];
 
   const [user, loading, error] = useAuthState(auth);
 
   const onClickNext = async () => {
     dispatch({ type: "SET_STEP", payload: step + 1 });
-
-    if (step + 1 >= data.length) {
-      dispatch({ type: "SET_STEP", payload: 0 });
+    if (step + 2 === data.length) {
       await handleFetch();
+      dispatch({ type: "SET_STEP", payload: 0 });
     }
   };
 
@@ -56,12 +53,12 @@ const GamePage = () => {
   };
 
   const logUserHistory = async (correctAnswers, totalQuestions) => {
-    const user = auth.currentUser;
-    if (user) {
+    const currentUser = auth.currentUser;
+    if (currentUser) {
       try {
         const date = Timestamp.fromDate(new Date());
         const newData = {
-          userId: user.uid,
+          userId: currentUser.uid,
           correctAnswers,
           totalQuestions,
           date,
@@ -108,9 +105,7 @@ const GamePage = () => {
                 Correct Answers: {correctAnswers} / {totalQuestions}
               </p>
             </CardHeader>
-            <CardContent>
-              {isLoading ? <GameSkeleton /> : <Game quest={quest} />}
-            </CardContent>
+            <CardContent>{isLoading ? <GameSkeleton /> : <Game />}</CardContent>
             <CardFooter className="flex items-center justify-between">
               <Button onClick={onClickNext} disabled={isLoading}>
                 Next
@@ -123,7 +118,7 @@ const GamePage = () => {
                   <Button
                     onClick={() => {
                       onResults();
-                      showAuthModal();
+                      dispatch({ type: "SHOW_MODAL" });
                     }}
                   >
                     Finish

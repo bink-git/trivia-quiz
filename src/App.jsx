@@ -2,7 +2,6 @@ import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import { Context } from "./context/GameContext";
 
 import { ToastContainer } from "react-toastify";
-import Home from "./HomePage";
 import Header from "./components/Header";
 import LoginPage from "./pages/LoginPage";
 import WelcomePage from "./pages/WelcomePage";
@@ -29,7 +28,6 @@ function App() {
         <Context>
           <Router>
             <Routes>
-              {/* <Route exact path="/" element={<Home />} /> */}
               <Route path="/" element={<LoginPage />} />
               <Route path="/welcome" element={<WelcomePage />} />
               <Route path="/game" element={<GamePage />} />

@@ -3,7 +3,7 @@ import he from "he";
 import { useSharedState } from "../context/sharedContext";
 import { Button } from "./ui/button";
 
-function Game({ quest }) {
+function Game() {
   const {
     state: { data, step, correctAnswers, totalQuestions },
     dispatch,
@@ -11,13 +11,13 @@ function Game({ quest }) {
 
   const [selectedAnswer, setSelectedAnswer] = useState(null);
 
-  const { incorrect_answers, correct_answer, question } = quest;
+  const { incorrect_answers, correct_answer, question } = data[step] || {};
   const answers = [correct_answer, ...incorrect_answers].sort();
   const decodeTitle = he.decode(question);
 
   useEffect(() => {
     setSelectedAnswer(null);
-  }, [quest]);
+  }, [step]);
 
   const onClickAnswer = (answer) => {
     if (data[step].correct_answer === answer) {
