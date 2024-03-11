@@ -17,7 +17,6 @@ const useDataFetching = () => {
     try {
       const userToken = await axios.get(REQUEST_TOKEN);
       const { token, response_code, response_message } = userToken.data;
-      console.log(token, response_code, response_message);
 
       if (response_code !== 0) {
         notifyError(response_message);
@@ -29,7 +28,6 @@ const useDataFetching = () => {
 
       dispatch({ type: "SET_TOKEN", payload: token });
       const res = await axios.get(`${API_URL}&token=${token}`);
-      console.log(res);
       dispatch({ type: "SET_DATA", payload: res.data.results });
       dispatch({ type: "LOADING_FALSE" });
     } catch (error) {

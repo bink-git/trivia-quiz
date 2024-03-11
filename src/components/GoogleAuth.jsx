@@ -13,7 +13,6 @@ const GoogleAuth = () => {
     try {
       await signInWithPopup(auth, googleProvider);
       if (auth.currentUser) {
-        toast.success("Logged in successfully");
         dispatch({ type: "HIDE_MODAL" });
       }
     } catch (error) {

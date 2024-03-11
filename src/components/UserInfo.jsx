@@ -17,7 +17,7 @@ const UserInfo = ({ user }) => {
       await auth.signOut();
       dispatch({ type: "RESET_GAME" });
       navigate("/");
-      notifySuccess();
+      // notifySuccess();
     } catch (err) {
       notifyError(err.message);
     }

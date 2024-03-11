@@ -13,7 +13,6 @@ import {
 import Loader from "./Loader";
 import { toast } from "react-toastify";
 
-import { SUCCESS_MESAGE, TEST_URL } from "../utils/constants";
 import GoogleAuth from "./GoogleAuth";
 import GithubAuth from "./GithubAuth";
 import EmailAuth from "./EmailAuth";

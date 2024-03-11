@@ -13,7 +13,6 @@ const GithubAuth = () => {
     try {
       await signInWithPopup(auth, githubProvider);
       if (auth.currentUser) {
-        toast.success("Logged in successfully");
         dispatch({ type: "HIDE_MODAL" });
       }
     } catch (error) {

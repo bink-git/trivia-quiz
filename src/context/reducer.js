@@ -7,8 +7,6 @@ export const initialState = {
   token: "",
   userEmail: "",
   difficulty: "easy",
-  // start: true,
-  // reset: true,
   anonymous: false,
   showResults: false,
   showModal: false,
@@ -21,8 +19,6 @@ export const reducer = (state, action) => {
   switch (action.type) {
     case "SET_DIFFICALTY":
       return { ...state, difficulty: action.payload };
-    // case "START":
-    //   return { ...state, start: false, reset: false };
     case "RESET_GAME":
       return { ...initialState };
     case "RESET_SCORES":

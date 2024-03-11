@@ -33,12 +33,13 @@ function ResultsPage() {
   const notifyError = (message) => toast.error(message);
 
   const logUserStatistic = async (correctAnswers, totalQuestions) => {
-    const user = auth.currentUser;
-    if (user) {
+    const currentUser = auth.currentUser;
+    console.log(currentUser);
+    if (currentUser) {
       try {
         const date = Timestamp.fromDate(new Date());
         const newData = {
-          userId: user.uid,
+          userId: currentUser.uid,
           correctAnswers,
           totalQuestions,
           date,
@@ -48,16 +49,6 @@ function ResultsPage() {
       } catch (error) {
         notifyError(error.message);
       }
-    }
-  };
-
-  const handleLogout = async () => {
-    try {
-      await auth.signOut();
-      dispatch({ type: "RESET_GAME" });
-      navigate("/");
-    } catch (err) {
-      notifyError(err.message);
     }
   };
 
@@ -71,6 +62,8 @@ function ResultsPage() {
       if (success) {
         notifyInfo(SUCCESS_MESAGE);
         logUserStatistic(correctAnswers, totalQuestions);
+        localStorage.removeItem("correctAnswers");
+        localStorage.removeItem("totalQuestions");
         dispatch({ type: "DISABLE_ANONYMOUS" });
       }
       dispatch({ type: "HIDE_MODAL" });
@@ -79,6 +72,27 @@ function ResultsPage() {
     } finally {
       navigate("/results");
     }
+  };
+
+  const handleLogout = async () => {
+    try {
+      await auth.signOut();
+      dispatch({ type: "RESET_GAME" });
+      localStorage.removeItem("email");
+      localStorage.removeItem("correctAnswers");
+      localStorage.removeItem("totalQuestions");
+      navigate("/");
+    } catch (err) {
+      notifyError(err.message);
+    }
+  };
+
+  const onQuit = () => {
+    dispatch({ type: "RESET_GAME" });
+    localStorage.removeItem("correctAnswers");
+    localStorage.removeItem("totalQuestions");
+    localStorage.removeItem("email");
+    navigate("/");
   };
 
   return (
@@ -105,14 +119,7 @@ function ResultsPage() {
             {user ? (
               <Button onClick={handleLogout}>Quit the game</Button>
             ) : (
-              <Button
-                onClick={() => {
-                  dispatch({ type: "RESET_GAME" });
-                  navigate("/");
-                }}
-              >
-                Quit the game
-              </Button>
+              <Button onClick={onQuit}>Quit the game</Button>
             )}
           </div>
           <Dialog
