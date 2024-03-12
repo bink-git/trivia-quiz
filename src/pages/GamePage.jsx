@@ -66,7 +66,6 @@ const GamePage = () => {
         dispatch({ type: "SET_RESULTS", payload: [...results, newData] });
         await addDoc(collection(db, "history"), newData);
         dispatch({ type: "SHOW_RESULTS" });
-        // dispatch({ type: "HIDE_HISTORY" });
       } catch (error) {
         notifyError(error.message);
       }
@@ -86,7 +85,12 @@ const GamePage = () => {
 
       logUserHistory(correctAnswers, totalQuestions);
     }
-  }, []);
+
+    if (user) {
+      localStorage.removeItem("correctAnswers");
+      localStorage.removeItem("totalQuestions");
+    }
+  }, [correctAnswers, totalQuestions]);
 
   // useEffect(() => {
   //   if (user) {
@@ -134,7 +138,7 @@ const GamePage = () => {
               )}
             </CardFooter>
           </Card>
-          {!anonymous && <UserHistory />}
+          {user && <UserHistory />}
         </>
       )}
     </>
