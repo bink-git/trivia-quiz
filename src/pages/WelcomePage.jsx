@@ -18,8 +18,11 @@ const WelcomePage = () => {
     state: { difficulty, isLoading },
     dispatch,
   } = useSharedState();
+
   const { fetchData } = useDataFetching();
+
   const navigate = useNavigate();
+
   const notifyError = (message) => toast.error(message);
 
   const onStart = async () => {
@@ -27,9 +30,9 @@ const WelcomePage = () => {
       dispatch({ type: "LOADING_TRUE" });
       await fetchData();
       navigate("/game");
-      dispatch({ type: "LOADING_FALSE" });
     } catch (error) {
       notifyError(error.message);
+    } finally {
       dispatch({ type: "LOADING_FALSE" });
     }
   };
@@ -53,7 +56,7 @@ const WelcomePage = () => {
             </Label>
             <Select
               onValueChange={(value) => {
-                dispatch({ type: "SET_DIFFICALTY", payload: value });
+                dispatch({ type: "SET_DIFFICULTY", payload: value });
               }}
               defaultValue={difficulty}
             >

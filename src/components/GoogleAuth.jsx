@@ -13,9 +13,7 @@ const GoogleAuth = () => {
     try {
       await signInWithPopup(auth, googleProvider);
       if (auth.currentUser) {
-        dispatch({ type: "HIDE_MODAL" });
-        // localStorage.removeItem("correctAnswers");
-        // localStorage.removeItem("totalQuestions");
+        dispatch({ type: "HIDE_REGISTER_MODAL" });
       }
     } catch (error) {
       notifyError(error.message);

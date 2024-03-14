@@ -13,7 +13,7 @@ import { useSharedState } from "@/context/sharedContext";
 import useDataFetching from "@/hooks/useDataFetching";
 import { auth, db } from "@/utils/firebaseConfig";
 import { Timestamp, addDoc, collection } from "firebase/firestore";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
@@ -92,19 +92,6 @@ const GamePage = () => {
     }
   }, [correctAnswers, totalQuestions]);
 
-  // useEffect(() => {
-  //   if (user) {
-  //     localStorage.removeItem("correctAnswers");
-  //     localStorage.removeItem("totalQuestions");
-  //   }
-  // }, [user]);
-
-  const showAuthModal = () => {
-    setTimeout(() => {
-      dispatch({ type: "SHOW_MODAL" });
-    }, 2000);
-  };
-
   return (
     <>
       {(user || anonymous) && (
@@ -129,7 +116,7 @@ const GamePage = () => {
                   <Button
                     onClick={() => {
                       onResults();
-                      dispatch({ type: "SHOW_MODAL" });
+                      dispatch({ type: "SHOW_REGISTER_MODAL" });
                     }}
                   >
                     Finish

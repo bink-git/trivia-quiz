@@ -7,7 +7,7 @@ import {
   useSignInWithEmailLink,
   useSendSignInLinkToEmail,
 } from "react-firebase-hooks/auth";
-import { SUCCESS_MESAGE, TEST_URL } from "@/utils/constants";
+import { SUCCESS_MESSAGE, TEST_URL } from "@/utils/constants";
 import { toast } from "react-toastify";
 import Loader from "./Loader";
 import { Input } from "@/components/ui/input";
@@ -46,10 +46,10 @@ const EmailAuth = () => {
           );
           localStorage.removeItem("email");
           navigate("/welcome");
-          dispatch({ type: "LOADING_FALSE" });
         } catch (error) {
           notifyError(error.message);
           navigate("/");
+        } finally {
           dispatch({ type: "LOADING_FALSE" });
         }
       }
@@ -60,10 +60,6 @@ const EmailAuth = () => {
   if (error) {
     notifyError(error.message);
   }
-
-  // if (sending) {
-  //   return <p>Sending...</p>;
-  // }
 
   if (loading) {
     return <Loader />;
@@ -79,12 +75,10 @@ const EmailAuth = () => {
       });
       localStorage.setItem("email", state.userEmail);
       if (success) {
-        notifyInfo(SUCCESS_MESAGE);
-        dispatch({ type: "LOADING_FALSE" });
+        notifyInfo(SUCCESS_MESSAGE);
       }
     } catch (error) {
       notifyError(error.message);
-      dispatch({ type: "LOADING_FALSE" });
     } finally {
       dispatch({ type: "LOADING_FALSE" });
     }

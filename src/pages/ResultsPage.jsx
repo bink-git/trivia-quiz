@@ -1,6 +1,6 @@
 import { useNavigate } from "react-router-dom";
 import { Button } from "../components/ui/button";
-
+import { Input } from "@/components/ui/input";
 import {
   Dialog,
   DialogContent,
@@ -11,12 +11,11 @@ import {
 import { sendSignInLinkToEmail } from "firebase/auth";
 import { auth, db } from "@/utils/firebaseConfig";
 import { useAuthState } from "react-firebase-hooks/auth";
-import { SUCCESS_MESAGE, TEST_URL } from "@/utils/constants";
-import { toast } from "react-toastify";
+import { SUCCESS_MESSAGE, TEST_URL } from "@/utils/constants";
+import toast from "react-hot-toast";
 
 import { collection, addDoc, Timestamp } from "firebase/firestore";
 import { useSharedState } from "@/context/sharedContext";
-import { Input } from "@/components/ui/input";
 import GoogleAuth from "@/components/GoogleAuth";
 import GithubAuth from "@/components/GithubAuth";
 
@@ -34,7 +33,6 @@ function ResultsPage() {
 
   const logUserStatistic = async (correctAnswers, totalQuestions) => {
     const currentUser = auth.currentUser;
-    console.log(currentUser);
     if (currentUser) {
       try {
         const date = Timestamp.fromDate(new Date());
@@ -60,13 +58,13 @@ function ResultsPage() {
       });
       localStorage.setItem("email", userEmail);
       if (success) {
-        notifyInfo(SUCCESS_MESAGE);
+        notifyInfo(SUCCESS_MESSAGE);
         logUserStatistic(correctAnswers, totalQuestions);
         localStorage.removeItem("correctAnswers");
         localStorage.removeItem("totalQuestions");
         dispatch({ type: "DISABLE_ANONYMOUS" });
       }
-      dispatch({ type: "HIDE_MODAL" });
+      dispatch({ type: "HIDE_REGISTER_MODAL" });
     } catch (error) {
       notifyError("Registration error:", error.message);
     } finally {
@@ -124,7 +122,7 @@ function ResultsPage() {
           </div>
           <Dialog
             open={showModal}
-            onOpenChange={() => dispatch({ type: "HIDE_MODAL" })}
+            onOpenChange={() => dispatch({ type: "HIDE_REGSTER_MODAL" })}
           >
             <DialogContent className="sm:max-w-[500px]">
               <DialogHeader>

@@ -13,7 +13,7 @@ const GithubAuth = () => {
     try {
       await signInWithPopup(auth, githubProvider);
       if (auth.currentUser) {
-        dispatch({ type: "HIDE_MODAL" });
+        dispatch({ type: "HIDE_REGISTER_MODAL" });
       }
     } catch (error) {
       notifyError(error.message);

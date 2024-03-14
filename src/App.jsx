@@ -1,8 +1,7 @@
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import { Context } from "./context/GameContext";
 
-// import { ToastContainer } from "react-toastify";
-import { Toaster } from "@/components/ui/toaster";
+import { Toaster } from "react-hot-toast";
 import Header from "./components/Header";
 import LoginPage from "./pages/LoginPage";
 import WelcomePage from "./pages/WelcomePage";
@@ -11,20 +10,36 @@ import ResultsPage from "./pages/ResultsPage";
 function App() {
   return (
     <>
-      {/* <ToastContainer
+      <Toaster
         position="top-center"
-        autoClose={3000}
-        hideProgressBar={false}
-        newestOnTop={false}
-        closeOnClick
-        rtl={false}
-        pauseOnFocusLoss
-        draggable
-        pauseOnHover
-        theme="colored"
-        transition:Bounce
-      /> */}
-      <Toaster />
+        reverseOrder={false}
+        gutter={8}
+        containerClassName=""
+        containerStyle={{}}
+        toastOptions={{
+          className: "",
+          duration: 3000,
+          style: {
+            background: "#363636",
+            color: "#fff",
+          },
+
+          success: {
+            duration: 3000,
+            style: {
+              background: "#19b44d",
+              color: "#fff",
+            },
+          },
+          error: {
+            duration: 3000,
+            style: {
+              background: "#dd352f",
+              color: "#fff",
+            },
+          },
+        }}
+      />
 
       <div className="container mx-auto flex flex-col justify-center py-10">
         <Header />

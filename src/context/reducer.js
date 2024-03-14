@@ -17,7 +17,7 @@ export const initialState = {
 
 export const reducer = (state, action) => {
   switch (action.type) {
-    case "SET_DIFFICALTY":
+    case "SET_DIFFICULTY":
       return { ...state, difficulty: action.payload };
     case "RESET_GAME":
       return { ...initialState };
@@ -47,9 +47,9 @@ export const reducer = (state, action) => {
       return { ...state, anonymous: true };
     case "DISABLE_ANONYMOUS":
       return { ...state, anonymous: false };
-    case "SHOW_MODAL":
+    case "SHOW_REGISTER_MODAL":
       return { ...state, showModal: true };
-    case "HIDE_MODAL":
+    case "HIDE_REGISTER_MODAL":
       return { ...state, showModal: false };
     case "LOADING_TRUE":
       return { ...state, isLoading: true };
