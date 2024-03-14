@@ -3,7 +3,7 @@ import { useSharedState } from "@/context/sharedContext";
 import { Button } from "./ui/button";
 import { auth, db } from "@/utils/firebaseConfig";
 import { collection, getDocs, orderBy, query, where } from "firebase/firestore";
-import { toast } from "react-toastify";
+import toast from "react-hot-toast";
 const UserHistory = () => {
   const {
     state: { results, isHistory },

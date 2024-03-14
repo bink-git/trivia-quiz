@@ -1,8 +1,7 @@
 import axios from "axios";
 import { useSharedState } from "@/context/sharedContext";
 import { REQUEST_TOKEN, MAIN_URL } from "../utils/constants";
-import { toast } from "react-toastify";
-import { useEffect } from "react";
+import toast from "react-hot-toast";
 
 const useDataFetching = () => {
   const {

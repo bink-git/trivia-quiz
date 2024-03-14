@@ -8,7 +8,7 @@ import {
   useSendSignInLinkToEmail,
 } from "react-firebase-hooks/auth";
 import { SUCCESS_MESSAGE, TEST_URL } from "@/utils/constants";
-import { toast } from "react-toastify";
+import  toast  from "react-hot-toast";
 import Loader from "./Loader";
 import { Input } from "@/components/ui/input";
 import { Button } from "./ui/button";

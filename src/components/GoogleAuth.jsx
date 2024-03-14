@@ -1,6 +1,6 @@
 import { auth, googleProvider } from "../utils/firebaseConfig";
 import { signInWithPopup } from "firebase/auth";
-import { toast } from "react-toastify";
+import toast from "react-hot-toast";
 import { FcGoogle } from "react-icons/fc";
 import { Button } from "./ui/button";
 import { useSharedState } from "@/context/sharedContext";

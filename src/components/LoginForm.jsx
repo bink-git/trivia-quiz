@@ -11,7 +11,7 @@ import {
 } from "firebase/auth";
 
 import Loader from "./Loader";
-import { toast } from "react-toastify";
+import toast from "react-hot-toast";
 
 import GoogleAuth from "./GoogleAuth";
 import GithubAuth from "./GithubAuth";
