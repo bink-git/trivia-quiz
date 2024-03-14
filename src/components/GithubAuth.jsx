@@ -1,6 +1,6 @@
 import { auth, githubProvider } from "../utils/firebaseConfig";
 import { signInWithPopup } from "firebase/auth";
-import toast from "react-toast";
+import toast from "react-hot-toast";
 import { FaGithub } from "react-icons/fa";
 import { Button } from "./ui/button";
 import { useSharedState } from "@/context/sharedContext";
