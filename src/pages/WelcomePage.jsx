@@ -10,7 +10,7 @@ import {
 } from "@/components/ui/select";
 import useDataFetching from "@/hooks/useDataFetching";
 import { useNavigate } from "react-router-dom";
-import { toast } from "react-toastify";
+import toast from "react-hot-toast";
 import Loader from "@/components/Loader";
 
 const WelcomePage = () => {
