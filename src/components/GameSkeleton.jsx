@@ -1,24 +1,23 @@
-import Skeleton from 'react-loading-skeleton';
-import 'react-loading-skeleton/dist/skeleton.css';
+import { Skeleton } from "@/components/ui/skeleton";
 
 const GameSkeleton = () => {
   return (
-    <div className="game-skeleton">
+    <div className="flex flex-1 flex-col">
       <h2>
-        <Skeleton count={1} className="skeleton-title" />
+        <Skeleton className="mb-5 h-[80px] rounded-[16px]" />
       </h2>
-      <ul>
-        <li>
-          <Skeleton count={1} />
+      <ul className="space-y-4">
+        <li className="flex h-[60px] w-full items-center justify-center rounded-[16px] border-2 p-4">
+          <Skeleton className="h-[30px] w-full rounded-[10px]" />
         </li>
-        <li>
-          <Skeleton count={1} />
+        <li className="flex h-[60px] w-full items-center justify-center rounded-[16px] border-2 p-4">
+          <Skeleton className="h-[30px] w-full rounded-[10px]" />
         </li>
-        <li>
-          <Skeleton count={1} />
+        <li className="flex h-[60px] w-full items-center justify-center rounded-[16px] border-2 p-4">
+          <Skeleton className="h-[30px] w-full rounded-[10px]" />
         </li>
-        <li>
-          <Skeleton count={1} />
+        <li className="flex h-[60px] w-full items-center justify-center rounded-[16px] border-2 p-4">
+          <Skeleton className="h-[30px] w-full rounded-[10px]" />
         </li>
       </ul>
     </div>
