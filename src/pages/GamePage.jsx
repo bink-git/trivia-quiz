@@ -1,3 +1,5 @@
+import { useEffect } from "react";
+
 import Game from "@/components/Game";
 import GameSkeleton from "@/components/GameSkeleton";
 import UserHistory from "@/components/UserHistory";
@@ -13,7 +15,6 @@ import { useSharedState } from "@/context/sharedContext";
 import useDataFetching from "@/hooks/useDataFetching";
 import { auth, db } from "@/utils/firebaseConfig";
 import { Timestamp, addDoc, collection } from "firebase/firestore";
-import { useEffect, useState } from "react";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { useNavigate } from "react-router-dom";
 import toast from "react-hot-toast";
@@ -41,9 +42,8 @@ const GamePage = () => {
 
   const onClickNext = async () => {
     dispatch({ type: "SET_STEP", payload: step + 1 });
-    if (step + 2 === data.length) {
+    if (step + 3 === data.length) {
       await handleFetch();
-      dispatch({ type: "SET_STEP", payload: 0 });
     }
   };
 

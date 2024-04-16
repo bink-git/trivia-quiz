@@ -5,12 +5,11 @@ import { Button } from "./ui/button";
 
 function Game() {
   const {
-    state: { data, step, correctAnswers, totalQuestions },
+    state: { data, prefetchedData, step, correctAnswers, totalQuestions },
     dispatch,
   } = useSharedState();
 
   const [selectedAnswer, setSelectedAnswer] = useState(null);
-
   const { incorrect_answers, correct_answer, question } = data[step] || {};
   const answers = [correct_answer, ...incorrect_answers].sort();
   const decodeTitle = he.decode(question);
@@ -18,6 +17,20 @@ function Game() {
   useEffect(() => {
     setSelectedAnswer(null);
   }, [step]);
+
+  useEffect(() => {
+    if (step === data.length - 1) {
+      dispatch({
+        type: "SET_DATA",
+        payload: prefetchedData,
+      });
+      dispatch({
+        type: "SET_PREFETCHED_DATA",
+        payload: [],
+      });
+      dispatch({ type: "SET_STEP", payload: 0 });
+    }
+  }, [prefetchedData, step, data.length]);
 
   const onClickAnswer = (answer) => {
     if (data[step].correct_answer === answer) {
