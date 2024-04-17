@@ -18,6 +18,7 @@ import { Timestamp, addDoc, collection } from "firebase/firestore";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { useNavigate } from "react-router-dom";
 import toast from "react-hot-toast";
+import { PREFETCHED_STEP } from "@/utils/constants";
 
 const GamePage = () => {
   const {
@@ -42,7 +43,7 @@ const GamePage = () => {
 
   const onClickNext = async () => {
     dispatch({ type: "SET_STEP", payload: step + 1 });
-    if (step + 3 === data.length) {
+    if (step + PREFETCHED_STEP === data.length) {
       await handleFetch();
     }
   };

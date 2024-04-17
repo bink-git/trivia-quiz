@@ -13,22 +13,22 @@ function Game() {
   const { incorrect_answers, correct_answer, question } = data[step] || {};
   const answers = [correct_answer, ...incorrect_answers].sort();
   const decodeTitle = he.decode(question);
+  const LAST_INDEX = data.length - 1;
 
   useEffect(() => {
     setSelectedAnswer(null);
   }, [step]);
 
   useEffect(() => {
-    if (step === data.length - 1) {
+    if (step === LAST_INDEX) {
       dispatch({
         type: "SET_DATA",
-        payload: prefetchedData,
+        payload: [...data, ...prefetchedData],
       });
       dispatch({
         type: "SET_PREFETCHED_DATA",
         payload: [],
       });
-      dispatch({ type: "SET_STEP", payload: 0 });
     }
   }, [prefetchedData, step, data.length]);
 

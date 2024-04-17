@@ -2,6 +2,7 @@ import axios from "axios";
 import { useSharedState } from "@/context/sharedContext";
 import { REQUEST_TOKEN, MAIN_URL } from "../utils/constants";
 import toast from "react-hot-toast";
+import { useEffect } from "react";
 
 const useDataFetching = () => {
   const {
@@ -33,15 +34,6 @@ const useDataFetching = () => {
         type: "SET_DATA",
         payload: res.data.results,
       });
-
-      // if (step + 2 === data.length) {
-      //   // Request a new set of questions and store it in a new state
-      //   const preFetchedData = await axios.get(`${API_URL}&token=${token}`);
-      //   dispatch({
-      //     type: "SET_PREFETCHED_DATA",
-      //     payload: preFetchedData.data.results,
-      //   });
-      // }
     } catch (error) {
       notifyError(error.message);
     } finally {
@@ -51,8 +43,6 @@ const useDataFetching = () => {
 
   const handleFetch = async () => {
     try {
-      // const res = await axios.get(`${API_URL}&token=${token}`);
-      // dispatch({ type: "SET_DATA", payload: res.data.results });
       const preFetchedData = await axios.get(`${API_URL}&token=${token}`);
       dispatch({
         type: "SET_PREFETCHED_DATA",
