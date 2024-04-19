@@ -8,6 +8,7 @@ export const REQUEST_TOKEN =
 
 export const SUCCESS_MESSAGE = "Check your email for the sign-in link";
 export const LOGOUT_MESSAGE = "Successfully logged out!";
+export const PREFETCHED_STEP = 3;
 
 export const RESPONSE_CODES = [
   { code: 0, message: "Success" },
