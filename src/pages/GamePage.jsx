@@ -39,7 +39,7 @@ const GamePage = () => {
   const navigate = useNavigate();
   const notifyError = (message) => toast.error(message);
 
-  const [user, loading, error] = useAuthState(auth);
+  const [user] = useAuthState(auth);
 
   const onClickNext = async () => {
     dispatch({ type: "SET_STEP", payload: step + 1 });
