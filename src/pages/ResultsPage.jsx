@@ -122,7 +122,7 @@ function ResultsPage() {
           </div>
           <Dialog
             open={showModal}
-            onOpenChange={() => dispatch({ type: "HIDE_REGSTER_MODAL" })}
+            onOpenChange={() => dispatch({ type: "HIDE_REGISTER_MODAL" })}
           >
             <DialogContent className="sm:max-w-[500px]">
               <DialogHeader>
