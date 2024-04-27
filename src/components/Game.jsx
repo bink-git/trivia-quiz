@@ -3,13 +3,12 @@ import he from "he";
 import { useSharedState } from "../context/sharedContext";
 import { Button } from "./ui/button";
 
-function Game() {
+function Game({ selectedAnswer, setSelectedAnswer }) {
   const {
     state: { data, prefetchedData, step, correctAnswers, totalQuestions },
     dispatch,
   } = useSharedState();
 
-  const [selectedAnswer, setSelectedAnswer] = useState(null);
   const { incorrect_answers, correct_answer, question } = data[step] || {};
   const answers = [correct_answer, ...incorrect_answers].sort();
   const decodeTitle = he.decode(question);
@@ -61,9 +60,9 @@ function Game() {
             className={`${
               selectedAnswer &&
               (answer === correct_answer
-                ? " border-green-400 bg-green-300"
+                ? "border-green-400 bg-green-300"
                 : answer === selectedAnswer
-                  ? " border-red-400 bg-red-300"
+                  ? "border-red-400 bg-red-300"
                   : "")
             }     `}
             key={answer}
