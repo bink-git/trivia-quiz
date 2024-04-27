@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 
 import Game from "@/components/Game";
 import GameSkeleton from "@/components/GameSkeleton";
@@ -34,6 +34,8 @@ const GamePage = () => {
     dispatch,
   } = useSharedState();
 
+  const [selectedAnswer, setSelectedAnswer] = useState(null);
+
   const { handleFetch } = useDataFetching();
 
   const navigate = useNavigate();
@@ -43,6 +45,7 @@ const GamePage = () => {
 
   const onClickNext = async () => {
     dispatch({ type: "SET_STEP", payload: step + 1 });
+    setSelectedAnswer(null);
     if (step + PREFETCHED_STEP === data.length) {
       await handleFetch();
     }
@@ -104,7 +107,16 @@ const GamePage = () => {
                 Correct Answers: {correctAnswers} / {totalQuestions}
               </p>
             </CardHeader>
-            <CardContent>{isLoading ? <GameSkeleton /> : <Game />}</CardContent>
+            <CardContent>
+              {isLoading ? (
+                <GameSkeleton />
+              ) : (
+                <Game
+                  selectedAnswer={selectedAnswer}
+                  setSelectedAnswer={setSelectedAnswer}
+                />
+              )}
+            </CardContent>
             <CardFooter className="flex items-center justify-between">
               <Button onClick={onClickNext} disabled={isLoading}>
                 Next
