@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import he from "he";
 import { useSharedState } from "../context/sharedContext";
 import { Button } from "./ui/button";
