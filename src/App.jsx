@@ -1,111 +1,60 @@
-import { useState, useEffect } from 'react';
-import axios from 'axios';
-import { ToastContainer, toast } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import { Context } from "./context/GameContext";
 
-import Result from './Result';
-import Game from './Game';
-import Welcome from './Welcome';
-
-import { API_URL } from './constants';
-
-import logo from './assets/logo.png';
-
+import { Toaster } from "react-hot-toast";
+import Header from "./components/Header";
+import LoginPage from "./pages/LoginPage";
+import WelcomePage from "./pages/WelcomePage";
+import GamePage from "./pages/GamePage";
+import ResultsPage from "./pages/ResultsPage";
 function App() {
-  const [data, setData] = useState([]);
-  const [step, setStep] = useState(0);
-  const [correctAnswers, setCorrectAnswers] = useState(0);
-  const [start, setStart] = useState(true);
-  const [reset, setReset] = useState(true);
-
-  const notify = () => toast.error('Error fetching data');
-
-  const onClickNext = () => {
-    setStep(step + 1);
-  };
-
-  const onClickAnswer = (answer) => {
-    if (data[step].correct_answer === answer) {
-      setCorrectAnswers(correctAnswers + 1);
-    }
-  };
-
-  const onStart = () => {
-    setStart(false);
-    setReset(false);
-  };
-
-  const onReset = () => {
-    setReset(true);
-    setStep(0);
-    setCorrectAnswers(0);
-    setStart(true);
-  };
-
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const res = await axios.get(API_URL);
-        setData(res.data.results);
-      } catch (error) {
-        notify();
-      }
-    };
-
-    fetchData();
-  }, []);
-
-  const quest = data && data[step];
-
   return (
     <>
-      <header>
-        <img src={logo} alt="logo" className="logo" />
-      </header>
-      <div className="App">
-        <ToastContainer
-          position="top-center"
-          autoClose={3000}
-          hideProgressBar={false}
-          newestOnTop={false}
-          closeOnClick
-          rtl={false}
-          pauseOnFocusLoss
-          draggable
-          pauseOnHover
-          theme="colored"
-          transition:Bounce
-        />
+      <Toaster
+        position="top-center"
+        reverseOrder={false}
+        gutter={8}
+        containerClassName=""
+        containerStyle={{}}
+        toastOptions={{
+          className: "",
+          duration: 3000,
+          style: {
+            background: "#363636",
+            color: "#fff",
+          },
 
-        {start && reset && <Welcome onStart={onStart} />}
-        {!start && quest && (
-          <>
-            <p className="quest-step">
-              Question: {step + 1} / {data.length}
-            </p>
+          success: {
+            duration: 3000,
+            style: {
+              background: "#19b44d",
+              color: "#fff",
+            },
+          },
+          error: {
+            duration: 3000,
+            style: {
+              background: "#dd352f",
+              color: "#fff",
+            },
+          },
+        }}
+      />
 
-            <Game
-              quest={quest}
-              onClickAnswer={onClickAnswer}
-              correctAnswers={correctAnswers}
-              onClickNext={onClickNext}
-            />
-            <button className="next" onClick={onClickNext}>
-              {step === data.length - 1 ? 'Finish Quiz' : 'Next'}
-            </button>
-          </>
-        )}
-
-        {step === data.length && (
-          <Result
-            correctAnswers={correctAnswers}
-            reset={reset}
-            onReset={onReset}
-          />
-        )}
+      <div className="container mx-auto flex flex-col justify-center py-10">
+        <Header />
+        <Context>
+          <Router>
+            <Routes>
+              <Route path="/" element={<LoginPage />} />
+              <Route path="/welcome" element={<WelcomePage />} />
+              <Route path="/game" element={<GamePage />} />
+              <Route path="/results" element={<ResultsPage />} />
+            </Routes>
+          </Router>
+        </Context>
       </div>
     </>
   );
 }
-
 export default App;
